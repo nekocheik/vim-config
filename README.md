@@ -8,9 +8,9 @@
   - [x] git :
   https://github.com/tpope/vim-fugitive
   - [x] git watch file change :
-  Plug 'xuyuanp/nerdtree-git-plugin'
-  - fast commit git
-  - handler of file -> create and delete file most quickly
+  https://github.com/Xuyuanp/nerdtree-git-plugin
+  - [x] handler of file -> create and delete file most quickly
+    https://github.com/preservim/nerdtree
   - use vim with tmux
   - eventually snipet for langues 
   - autocompletion -> javascript, html, css, sass, python, php, vue, react, php, twig, pug.
