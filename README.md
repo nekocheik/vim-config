@@ -19,6 +19,7 @@
   - change of file quickly
   - switch relative number and number normal
   - better handler of clipboard
+  - theme vim
 
 ### features for a next time.
 
