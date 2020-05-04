@@ -9,7 +9,7 @@
   https://github.com/tpope/vim-fugitive
   - [x] git watch file change :
   https://github.com/Xuyuanp/nerdtree-git-plugin
-  - [x] handler of file -> create and delete file most quickly
+  - [x] handler of file -> create and delete file most quickly :
     https://github.com/preservim/nerdtree
   - use vim with tmux
   - eventually snipet for langues 
