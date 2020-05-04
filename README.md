@@ -5,7 +5,9 @@
 ## features required
 
 #### list of plugin userful
-  - git
+  - git\[x]
+  https://github.com/tpope/vim-fugitive
+  
   - merge git -> graph
   - git change watch
   - fast commit git
