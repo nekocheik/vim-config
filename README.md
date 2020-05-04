@@ -20,7 +20,7 @@
   - switch relative number and number normal
   - better handler of clipboard
 
-### feature for a next time.
+### features for a next time.
 
   - docker handler
   - debug tools for javaScript
