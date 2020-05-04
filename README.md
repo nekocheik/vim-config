@@ -12,6 +12,7 @@
   - [x] handler of file -> create and delete file most quickly :
     https://github.com/preservim/nerdtree
   - use vim with tmux
+  - close automatically caracter as { [ ' " (. for code faster.
   - eventually snipet for langues 
   - autocompletion -> javascript, html, css, sass, python, php, vue, react, php, twig, pug.
   - syntax for langues above html...
