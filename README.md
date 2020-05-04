@@ -22,5 +22,5 @@
 
 ### feature for a next time.
 
-" docker handler
-" debug tools for javaScript
+  - docker handler
+  - debug tools for javaScript
