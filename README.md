@@ -7,8 +7,7 @@
 #### list of plugin userful
   - [x] git :
   https://github.com/tpope/vim-fugitive
-  - merge git -> graph
-  - git change watch
+  - git watch fil change
   - fast commit git
   - handler of file -> create and delete file most quickly
   - use vim with tmux
