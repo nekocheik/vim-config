@@ -7,7 +7,8 @@
 #### list of plugin userful
   - [x] git :
   https://github.com/tpope/vim-fugitive
-  - git watch fil change
+  - [x] git watch file change :
+  Plug 'xuyuanp/nerdtree-git-plugin'
   - fast commit git
   - handler of file -> create and delete file most quickly
   - use vim with tmux
