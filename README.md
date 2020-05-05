@@ -14,8 +14,8 @@
   - [x] use vim with tmux : Plug 'tmux-plugins/vim-tmux-focus-events'
   - [x] close automatically caracter as { [ ' " (. for code faster : https://github.com/jiangmiao/auto-pairs
   - [x] eventually snipet for langues : 
-    https://github.com/Shougo/deoplete.nvim#configuration,
-    https://github.com/SirVer/ultisnips,
+    https://github.com/Shougo/deoplete.nvim#configuration,  
+    https://github.com/SirVer/ultisnips,  
     https://github.com/autozimu/LanguageClient-neovim,
   - autocompletion -> javascript, html, css, sass, python, php, vue, react, php, twig, pug.
   - syntax for langues above html...
