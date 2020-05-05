@@ -16,9 +16,12 @@
   - [x] eventually snipet for langues : 
     https://github.com/Shougo/deoplete.nvim#configuration,  
     https://github.com/SirVer/ultisnips,  
+  - [x] autocompletion -> javascript, html, css, sass, python, php, vue, react, php, twig, pug :
     https://github.com/autozimu/LanguageClient-neovim,
-  - autocompletion -> javascript, html, css, sass, python, php, vue, react, php, twig, pug.
+    php : https://github.com/roxma/LanguageServer-php-neovim,
+    vue : https://www.npmjs.com/package/vls,
   - syntax for langues above html...
+
   - auto indent
   - go in the file frome the path in the code
   - change of file quickly
