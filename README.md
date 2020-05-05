@@ -25,10 +25,10 @@
      with coc vim.
   - [x] auto indent :
     https://vimawesome.com/plugin/jade-vim
-  - go in the file frome the path in the code :
+  - [x] go in the file frome the path in the code :
   https://gitlab.com/neonunux/vim-open-or-create-path-and-file
-  - postition on page : https://github.com/vim-airline/vim-airline
-  - theme vim : https://github.com/altercation/vim-colors-solarized
+  - [x] postition on page : https://github.com/vim-airline/vim-airline
+  - [x] theme vim : https://github.com/altercation/vim-colors-solarized
 
 ### features for a next time.
 
