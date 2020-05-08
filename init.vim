@@ -1,7 +1,6 @@
 " config by default
 set shell=sh
 set relativenumber
-hi Comment guifg=#ABCDEF 
 set smartindent
 set expandtab
 set shiftwidth=2
@@ -20,9 +19,25 @@ set relativenumber
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'rking/ag.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-flow.vim'
 
-Plug 'kien/ctrlp.vim'
+Plug 'amiralies/coc-flow'
+
+Plug 'tpope/vim-eunuch'
+
+Plug 'marcweber/vim-addon-manager'
+
+Plug 'yggdroot/indentline'
+
+Plug 'mhartington/oceanic-next'
+
+Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
+
+Plug 'terryma/vim-smooth-scroll'
+
+Plug 'rking/ag.vim'
 
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -40,6 +55,8 @@ Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 Plug 'chun-yang/auto-pairs'
+
+Plug 'chemzqm/vim-jsx-improve'
 
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
@@ -71,8 +88,26 @@ Plug 'altercation/vim-colors-solarized'
 
 Plug 'leafoftree/vim-vue-plugin'
 
+
 call plug#end()
 
+" theme 
+
+" For Neovim 0.1.3 and 0.1.4
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+" Or if you have Neovim >= 0.1.5
+if (has("termguicolors"))
+ set termguicolors
+endif
+
+" Theme
+syntax enable
+colorscheme OceanicNext
+syntax on
+let g:oceanic_next_terminal_bold = 1
+let g:oceanic_next_terminal_italic = 1
+colorscheme OceanicNext
 
 " ////// go to a file //////
 
@@ -145,14 +180,14 @@ set shortmess+=c
 set signcolumn=yes
 
 
-let g:UltiSnipsExpandTrigger=""
+let g:UltiSnipsExpandTrigger="<c-bar>"
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
 
 " Use <C-j> for select text for visual placeholder of snippet.
 vmap <C-j> <Plug>(coc-snippets-select)
-
+f
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
 let g:coc_snippet_next = '<c-j>'
 
@@ -172,7 +207,6 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -294,20 +328,16 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-
-
-
-
-
-
 " LanguageClient-neovim
 
 set hidden
 
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    \ 'javascript': ['typescript-language-server', '--stdio'],
+    \ 'typescript': ['typescript-language-server', '--stdio'],
+    \ 'javascript.jsx': ['javascript-typescript-stdio', '--stdio'],
+    \ 'typescript.tsx': ['javascript-typescript-stdio', '--stdio'],
     \ 'python': ['/usr/local/bin/pyls'],
     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
     \ 'vue': ['vls']
@@ -321,29 +351,59 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " vim airline
 
+let g:airline#extensions#tabline#enabled = 1
+
 let g:airline#extensions#tabline#formatter = 'default'
 
 " controlP
-
-  let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-  let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-    \ 'file': '\v\.(exe|so|dll)$',
-    \ 'link': 'some_bad_symbolic_links',
-    \ }
-
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
-" theme
-
-syntax enable
-" colorscheme solarized
-" ctrlp ignore
-
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+ let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|node_modules|vendors|dist)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
+
+" smooth scroll
+
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
+
+" nerdtree
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && v:this_session == "" | NERDTree | endif
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+
+map <C-n> :NERDTreeToggle<CR>
+
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" vim indent guild
+
+let g:indentLine_color_gui = '#EFEFEF'
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+
+" auto completion vim
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#flow#get_source_options({
+    \ 'name': 'flow',
+    \ 'whitelist': ['javascript'],
+    \ 'completor': function('asyncomplete#sources#flow#completor'),
+    \ 'config': {
+    \    'prefer_local': 1,
+    \    'flowbin_path': expand('~/bin/flow'),
+    \    'show_typeinfo': 1
+    \  },
+    \ }))
