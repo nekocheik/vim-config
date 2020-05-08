@@ -20,6 +20,13 @@ set relativenumber
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'rking/ag.vim'
+
+Plug 'kien/ctrlp.vim'
+
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+
 Plug 'kien/ctrlp.vim'
 
 Plug 'tpope/vim-fugitive'
@@ -331,3 +338,12 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
 syntax enable
 " colorscheme solarized
+" ctrlp ignore
+
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn|node_modules|vendors|dist)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
