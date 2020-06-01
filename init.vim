@@ -8,13 +8,6 @@ set shiftwidth=2
 set softtabstop=2
 set clipboard=unnamedplus
 
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
-
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4
 
@@ -87,6 +80,9 @@ Plug 'altercation/vim-colors-solarized'
 
 Plug 'leafoftree/vim-vue-plugin'
 
+Plug 'airblade/vim-gitgutter'
+
+Plug 'terryma/vim-multiple-cursors'
 
 call plug#end()
 
@@ -258,17 +254,10 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'default'
 
 " controlP
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
-\ 'dir':  '\v[\/]\.(git|hg|svn|node_modules|vendors|dist)$',
-\ 'file': '\v\.(exe|so|dll)$',
-\ 'link': 'some_bad_symbolic_links',
-\ }
-
+  \ 'dir':  '\.git$\|\.yardoc\|node_modules\|log\|tmp$',
+  \ 'file': '\.so$\|\.dat$|\.DS_Store$'
+  \ }
 
 " smooth scroll
 
@@ -296,3 +285,19 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 let g:indentLine_color_gui = '#EFEFEF'
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+
+
+" CtrlP auto cache clearing.
+" ----------------------------------------------------------------------------
+function! SetupCtrlP()
+  if exists("g:loaded_ctrlp") && g:loaded_ctrlp
+    augroup CtrlPExtension
+      autocmd!
+      autocmd FocusGained  * CtrlPClearCache
+      autocmd BufWritePost * CtrlPClearCache
+    augroup END
+  endif
+endfunction
+if has("autocmd")
+  autocmd VimEnter * :call SetupCtrlP()
+endif
