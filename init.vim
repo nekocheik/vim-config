@@ -7,6 +7,8 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 set clipboard=unnamedplus
+nnoremap <c-s> :w<cr>
+let mapleader = ","
 
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4
@@ -14,6 +16,18 @@ autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4
 set relativenumber
 
 call plug#begin('~/.vim/plugged')
+
+Plug 'jreybert/vimagit'
+
+Plug 'airblade/vim-gitgutter'
+
+Plug 'iamcco/mathjax-support-for-mkdp'
+
+Plug 'iamcco/markdown-preview.vim'
+
+Plug 'junegunn/vim-github-dashboard'
+
+Plug 'brooth/far.vim'
 
 Plug 'ryanoasis/vim-devicons'
 
@@ -52,8 +66,6 @@ Plug 'chemzqm/vim-jsx-improve'
 
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
-" Plug 'sirver/ultisnips'
-
 Plug 'honza/vim-snippets'
 
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -79,8 +91,6 @@ Plug 'lervag/vimtex'
 Plug 'altercation/vim-colors-solarized'
 
 Plug 'leafoftree/vim-vue-plugin'
-
-Plug 'airblade/vim-gitgutter'
 
 Plug 'terryma/vim-multiple-cursors'
 
@@ -301,3 +311,27 @@ endfunction
 if has("autocmd")
   autocmd VimEnter * :call SetupCtrlP()
 endif
+
+
+" Multi cursor key 
+" _____________________________________________________________________________
+
+" Default mapping
+let g:multi_cursor_start_word_key      = '<C-m>'
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_start_key           = 'g<C-m>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-m>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
+
+" Git dahsboard 
+" ______________________________________________________________________________
+" Profile named `ck`
+" Default configuration for public GitHub
+let g:github_dashboard = {
+\ 'username': 'cheik'
+\ }
+
+let g:github_dashboard['position'] = 'left'
