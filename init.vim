@@ -335,3 +335,56 @@ let g:github_dashboard = {
 \ }
 
 let g:github_dashboard['position'] = 'left'
+
+
+" Git gitgutter
+" ______________________________________________________________________________
+
+" Let's say, for example, you want to remove trailing whitespace.
+function! CleanUp(...)
+  if a:0  " opfunc
+    let [first, last] = [line("'["), line("']")]
+  else
+    let [first, last] = [line("'<"), line("'>")]
+  endif
+  for lnum in range(first, last)
+    let line = getline(lnum)
+
+    " clean up the text, e.g.:
+    let line = substitute(line, '\s\+$', '', '')
+
+    call setline(lnum, line)
+  endfor
+endfunction
+
+nmap <silent> <Leader>x :set opfunc=CleanUp<CR>g@
+
+"  This is like :GitGutterNextHunk but when it gets to the last hunk in the buffer it cycles around to the first.
+
+function! GitGutterNextHunkCycle()
+  let line = line('.')
+  silent! GitGutterNextHunk
+  if line('.') == line
+    1
+    GitGutterNextHunk
+  endif
+endfunction
+
+
+set foldtext=gitgutter#fold#foldtext()
+
+
+highlight GitGutterAdd    guifg=#009900 ctermfg=2
+highlight GitGutterChange guifg=#bbbb00 ctermfg=3
+highlight GitGutterDelete guifg=#ff2222 ctermfg=1
+
+
+" Your vimrc
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+set statusline+=%{GitStatus()}
+
+" vim-gitgutter used to do this by default:
+highlight! link SignColumn LineNr
