@@ -4,7 +4,7 @@
 
 ## features required
 
-#### list of plugin userful
+#### list of plugin useful
   - [x] git :
     https://github.com/tpope/vim-fugitive
   - [x] git watch file change :
