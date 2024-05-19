@@ -1,37 +1,41 @@
-# vim-config
+# Vim Configuration for Developers
 
-**this a the config of vim for the developpeur who change many file type.**
+This is a comprehensive Vim configuration tailored for developers who work with multiple file types.
 
-## features required
+## Features Required
 
-#### list of plugin useful
-  - [x] git :
-    https://github.com/tpope/vim-fugitive
-  - [x] git watch file change :
-    https://github.com/Xuyuanp/nerdtree-git-plugin
-  - [x] handler of file -> create and delete file most quickly :
-    https://github.com/preservim/nerdtree, 
-    https://vimawesome.com/plugin/vim-nerdtree-syntax-highlight
-  - [x] use vim with tmux : Plug 'tmux-plugins/vim-tmux-focus-events'
-  - [x] close automatically caracter as { [ ' " (. for code faster : https://github.com/jiangmiao/auto-pairs
-  - [x] eventually snipet for langues : 
-    https://github.com/neoclide/coc.nvim or https://github.com/Shougo/deoplete.nvim#configuration,  
-    https://github.com/SirVer/ultisnips,
-  - [x] autocompletion -> javascript, html, css, sass, python, php, vue, react, php, twig, pug :
-    https://github.com/autozimu/LanguageClient-neovim,
-    php : https://github.com/roxma/LanguageServer-php-neovim,
-    vue : https://www.npmjs.com/package/vls,
-  - [x] syntax for langues above html...
-     with coc vim.
-  - [x] auto indent :
-    https://vimawesome.com/plugin/jade-vim
-  - [x] go in the file frome the path in the code :
-  https://gitlab.com/neonunux/vim-open-or-create-path-and-file
-  - [x] postition on page : https://github.com/vim-airline/vim-airline
-  - [x] theme vim : https://github.com/altercation/vim-colors-solarized
+- Git Integration:
+  - Vim-Fugitive for Git commands within Vim.
+  - NERDTree Git Plugin to watch file changes via Git.
+- File Management:
+  - NERDTree for navigating the filesystem.
+  - NERDTree Syntax Highlight for syntax highlighting within NERDTree.
+- TMUX Integration:
+  - Use Vim with TMUX to enhance productivity: [tmux-plugins/vim-tmux-focus-events](https://github.com/tmux-plugins/vim-tmux-focus-events).
+- Auto-Closing of Characters:
+  - Auto-Pairs for automatically closing characters like {, [, ', ", (, etc.
+- Snippets:
+  - coco.nvim or Deoplete for modern autocompletion and snippets.
+  - UltiSnips for snippet management.
+- Language Autocompletion:
+  - LanguageClient-neovim for multiple languages.
+  - LanguageServer-php-neovim for PHP.
+  - Vue Language Server (VLS) for Vue.js.
+- Syntax Highlighting:
+  - Enhanced syntax support for HTML and other languages with CoC Vim.
+- Auto Indentation:
+  - vim-jade for improved indentation handling.
+- Navigating to Files:
+  - Vim Open or Create Path and File to navigate or create files from paths in code.
+- UI Enhancements:
+  - Vim-Airline for status and tab line enhancement.
+  - Vim Themes:
+    - vim-colors-solarized for a pleasing color scheme.
 
-### features for a next time.
+## Features for Future Consideration
 
-  - better handler of clipboard 
-  - docker handler
-  - debug tools for javaScript
+- Improved clipboard management.
+- Docker integration.
+- Debugging tools for JavaScript.
+
+This configuration makes extensive use of plugins to provide a robust, feature-rich environment suitable for various programming tasks and languages. Adjustments can be made as per the requirements of specific projects or developer preferences.
