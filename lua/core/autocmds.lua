@@ -16,10 +16,10 @@ autocmd('Filetype', {
 })
 
 -- Clear CtrlP cache on buffer write
-autocmd('BufWritePost', {
-    pattern = '*',
-    command = 'CtrlPClearAllCaches'
-})
+-- autocmd('BufWritePost', {
+--     pattern = '*',
+--     command = 'CtrlPClearAllCaches'
+-- })
 
 -- COC specific autocommands
 local coc_group = augroup('CocGroup', {})

@@ -99,11 +99,6 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/copilot.lua",
     url = "https://github.com/zbirenbaum/copilot.lua"
   },
-  ["ctrlp.vim"] = {
-    loaded = true,
-    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/ctrlp.vim",
-    url = "https://github.com/kien/ctrlp.vim"
-  },
   ["dressing.nvim"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/dressing.nvim",

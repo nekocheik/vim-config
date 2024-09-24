@@ -13,7 +13,6 @@ map('n', '<C-s>', ':w!<CR>')
 map('n', '<leader>q', ':q<CR>')
 map('n', '<leader>r', ':source $MYVIMRC<CR>:echo "nvim config reloaded!"<CR>')
 
-map('n', '<leader>f', ':Files<CR>')
 map('n', '<leader>b', ':Buffers<CR>')
 map('n', '<leader>rg', ':Rg<CR>')
 
@@ -33,10 +32,13 @@ map('n', 'gf', ':lua CreateFileIfNotExist()<CR>')
 map('n', 'K', ':lua HandleK()<CR>')
 
 map('n', '<leader>K', ':lua SearchWithFzfFromClipboard()<CR>')
+map('n', '<leaderk>k', ':lua SearchWithFzfFromClipboard()<CR>')
 
 map('n', '<leader>aa', ':AvanteToggle<CR>')
 map('n', '<leader>ar', ':AvanteRefresh<CR>')
 map('n', '<leader>ae', ':AvanteEdit<CR>')
+map('n', '<C-p>', ':lua vim.cmd("cd " .. ProjectRoot() .. " | Files")<CR>')
+map('n', '<leader>f', ':Files<CR>')
 
 map('', '∆', '<A-j>')
 map('', '˙', '<A-h>')

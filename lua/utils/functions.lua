@@ -1,7 +1,3 @@
-
-
-
-
 -- Custom fold text function
 function _G.CustomFoldText()
   local line = vim.fn.getline(vim.v.foldstart)
@@ -222,6 +218,16 @@ end
 
 
 vim.api.nvim_create_user_command('CopyMessages', CopyMessagesToClipboard, {})
+
+-- Détecter la racine du projet ou utiliser le dossier courant
+function _G.ProjectRoot()
+  local git_dir = vim.fn.system('git rev-parse --show-toplevel 2> /dev/null')
+  if vim.v.shell_error == 0 then
+    return vim.fn.trim(git_dir)
+  else
+    return vim.fn.getcwd()
+  end
+end
 
 
 local function js_to_ts()

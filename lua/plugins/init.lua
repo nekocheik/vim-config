@@ -1,7 +1,9 @@
-augroup packer_user_config
-  autocmd!
-  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-augroup end
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup END
+]])
 
 vim.cmd [[packadd packer.nvim]]
 
@@ -29,19 +31,17 @@ return require('packer').startup(function(use)
   use 'folke/which-key.nvim'
   use 'matze/vim-move'
   use 'roxma/vim-tmux-clipboard'
-  use 'neoclide/coc.nvim'
+  use {'neoclide/coc.nvim',branch = 'master', run = 'npm ci', }
   use 'folke/tokyonight.nvim'
   use 'tmux-plugins/vim-tmux-focus-events'
   use 'christoomey/vim-tmux-navigator'
   use 'cohama/lexima.vim'
   use 'preservim/nerdcommenter'
   use 'tpope/vim-surround'
-  use 'kien/ctrlp.vim'
   use 'thaerkh/vim-indentguides'
   use 'lucasprag/simpleblack'
   use 'prabirshrestha/vim-lsp'
   use 'mattn/vim-lsp-settings'
-  use {'neoclide/coc.nvim', branch = 'release'}
   use 'petertriho/nvim-scrollbar'
   use 'nathanaelkane/vim-indent-guides'
   use 'christoomey/vim-system-copy'
@@ -52,7 +52,6 @@ return require('packer').startup(function(use)
   use 'kyazdani42/nvim-web-devicons'
   use 'romgrk/barbar.nvim'
   use 'mhinz/vim-startify'
-  use 'junegunn/fzf'
   use {'catppuccin/nvim', as = 'catppuccin'}
   use {'mg979/vim-visual-multi', branch = 'master'}
   use 'tpope/vim-fugitive'
@@ -60,6 +59,7 @@ return require('packer').startup(function(use)
   use 'neoclide/coc-tabnine'
   use 'antosha417/nvim-lsp-file-operations'
   use 'nvim-lua/plenary.nvim'
+  use 'RRethy/vim-illuminate'
   use 'nvim-tree/nvim-tree.lua'
   use 'tmhedberg/simpylfold'
   use 'mhinz/vim-signify'
