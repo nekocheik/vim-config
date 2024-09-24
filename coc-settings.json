@@ -1,0 +1,95 @@
+{
+  "languageserver": {
+    "typescript": {
+      "command": "typescript-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["typescript", "typescriptreact"],
+      "initializationOptions": {
+        "preferences": {
+          "importModuleSpecifierPreference": "relative"
+        }
+      }
+    }
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.rename.enable": true,
+  "suggest.noselect": false,
+  "tsserver.log": "verbose",
+  "tsserver.trace.server": "verbose",
+  "vetur.format.defaultFormatter.html": "prettier",
+  "vetur.format.defaultFormatter.js": "prettier",
+  "vetur.format.defaultFormatter.ts": "prettier",
+  "vetur.validation.template": true,
+  "vetur.validation.script": true,
+  "vetur.validation.style": true,
+  "vetur.experimental.templateInterpolationService": true,
+  "snippets.priority": 150,
+  "git.addedSign.hlGroup": "GitGutterAdd",
+  "git.changedSign.hlGroup": "GitGutterChange",
+  "git.removedSign.hlGroup": "GitGutterDelete",
+  "git.topRemovedSign.hlGroup": "GitGutterDelete",
+  "git.changeRemovedSign.hlGroup": "GitGutterChangeDelete",
+  "tabnine.limit": 3,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "javascriptreact",
+    "typescript.tsx",
+    "graphql"
+  ],
+  "explorer.width": 30,
+  "explorer.buffer.root.template": "[icon & 1] OPEN EDITORS",
+  "explorer.file.root.template": "[icon & 1] PROJECT ([root])",
+  "explorer.file.child.template": "[git | 2] [selection | clip | 1] [indent][icon | 1] [diagnosticError & 1][filename omitCenter 1][modified][readonly] [linkIcon & 1][link growRight 1 omitCenter 5]",
+  "explorer.file.showHiddenFiles": true,
+  "explorer.file.autoReveal": false,
+  "explorer.icon.enableVimDevicons": true,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": false,
+  "javascript.suggest.autoImports": true,
+  "tsserver.enableJavascript": true,
+  "tsserver.enable": true,
+  "typescript.suggest.autoImports": true,
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "typescript.format.enabled": true,
+  "explorer.keyMappings": {
+    "s": "open:vsplit",
+    "mm": "rename",
+    "mc": "copyFile",
+    "C": "copyFile",
+    "md": "delete",
+    "D": "delete",
+    "ma": "addFile",
+    "mA": "addDirectory"
+  },
+  "hover": {
+    "target": "float",
+    "maxWidth": 120,
+    "float": {
+      "border": ["│", "─", "│", "│", "┌", "┐", "┘", "└"],
+      "highlight": "CocFloating"
+    }
+  },
+  "suggest": {
+    "timeout": 5000
+  },
+  "signature": {
+    "target": "float"
+  },
+  "hover.floatConfig": {
+    "maxWidth": 120,
+    "maxHeight": 30
+  },
+  "typescript": {
+    "inlayHints.includeInlayParameterNameHints": "all",
+    "inlayHints.includeInlayParameterNameHintsWhenArgumentMatchesName": true,
+    "inlayHints.includeInlayFunctionParameterTypeHints": true,
+    "inlayHints.includeInlayVariableTypeHints": true,
+    "inlayHints.includeInlayPropertyDeclarationTypeHints": true,
+    "inlayHints.includeInlayFunctionLikeReturnTypeHints": true,
+    "preferences.includePackageJsonAutoImports": "auto",
+    "suggest.completeFunctionCalls": true
+  }
+}

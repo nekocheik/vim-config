@@ -1,0 +1,1227 @@
+/// /Users/cheikkone49/.config/nvim/init.lua
+
+require('core.options')
+
+-- Installer mini.nvim avec mini.deps
+local path_package = vim.fn.stdpath('data') .. '/site/'
+local mini_path = path_package .. 'pack/deps/start/mini.nvim'
+if not vim.loop.fs_stat(mini_path) then
+  vim.cmd('echo "Installing `mini.nvim`" | redraw')
+  local clone_cmd = {
+    'git', 'clone', '--filter=blob:none',
+    'https://github.com/echasnovski/mini.nvim', mini_path
+  }
+  vim.fn.system(clone_cmd)
+  vim.cmd('packadd mini.nvim | helptags ALL')
+  vim.cmd('echo "Installed `mini.nvim`" | redraw')
+end
+
+-- Set up MiniDeps
+require('mini.deps').setup({
+  path = { package = path_package }
+})
+
+
+vim.cmd([[
+augroup packer_user_config
+autocmd!
+autocmd BufWritePost init.lua source <afile> | PackerCompile
+augroup end
+]])
+
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+
+local packer_bootstrap = ensure_packer()
+
+require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'
+end)
+
+
+-- Chargez vos autres configurations ici
+require('core.keymaps')
+require('core.autocmds')
+require('plugins')
+
+-- require('lua.plugins.configs.avante')
+require('plugins.configs.spectre')
+require('plugins.configs.accelerated')
+require('utils.functions')
+
+
+---- avante
+
+local add, later, now = MiniDeps.add, MiniDeps.later, MiniDeps.now
+add({
+
+  source = 'yetone/avante.nvim',
+  monitor = 'main',
+  depends = {
+    'stevearc/dressing.nvim',
+    'nvim-lua/plenary.nvim',
+    'MunifTanjim/nui.nvim',
+    'echasnovski/mini.icons'
+  },
+  hooks = {
+    post_checkout = function()
+      vim.cmd('AvanteBuild source=false')
+    end
+  }
+})
+
+-- Charger `avante_lib` immédiatement
+now(function()
+  require('avante_lib').load()
+end)
+
+-- Dépendances optionnelles
+add({ source = 'zbirenbaum/copilot.lua' })
+add({ source = 'HakonHarnes/img-clip.nvim' })
+add({ source = 'MeanderingProgrammer/render-markdown.nvim' })
+
+
+
+-- Configuration des autres plugins après le démarrage de Neovim
+later(function()
+  require('render-markdown').setup({ file_types = { 'markdown', 'vimwiki', "Avante" }, })
+  require('img-clip').setup({ embed_image_as_base64 = false })
+  require("copilot").setup({})
+  require'nvim-treesitter.configs'.setup {
+    ensure_installed = {
+      "bash", "c", "cpp", "css", "dockerfile", "go", "html", "javascript", 
+      "json", "lua", "make", "markdown", "python", "ruby", "rust", "scss", 
+      "sql", "typescript", "vim", "yaml", "java", "php", "toml", "vue"
+    },
+    sync_install = false, -- Installe les parsers de façon asynchrone (false pour synchrone)
+    auto_install = true,  -- Installe automatiquement les parsers manquants lors de l'ouverture d'un fichier
+    highlight = {
+      enable = true,              -- Activer la coloration syntaxique basée sur Treesitter
+      additional_vim_regex_highlighting = false, -- Utiliser la coloration Vim standard en plus de Treesitter
+    },
+    indent = {
+      enable = true               -- Activer l'indentation automatique basée sur Treesitter
+    },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "gnn",
+        node_incremental = "grn",
+        scope_incremental = "grc",
+        node_decremental = "grm",
+      },
+    },
+    textobjects = {
+      select = {
+        enable = true,
+        lookahead = true, -- Déplacer le curseur vers les objets textuels détectés
+        keymaps = {
+          -- Sélectionner en fonction des objets textuels
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ac"] = "@class.outer",
+          ["ic"] = "@class.inner",
+        },
+      },
+    },
+  }
+
+
+  require("avante").setup({
+    auto_suggestions_provider = "openai",
+    provider = "openai",
+    openai = {
+      endpoint = "https://api.corcel.io/v1",
+      model = "llama3-70b-8192",
+      temperature = 0.1,
+      max_tokens = 4096,
+      api_key = "d8f2407e-bae3-45b5-a04a-aff0f5d93d99",
+    },
+    behaviour = {
+      auto_suggestions = false,
+      auto_set_highlight_group = true,
+      auto_set_keymaps = true,
+    },
+    mappings = {
+      suggestion = {
+        accept = "<M-l>",
+        next = "<M-]>",
+        prev = "<M-[>",
+        dismiss = "<C-]>",
+      },
+      diff = {
+        ours = "co",
+        theirs = "ct",
+        both = "cb",
+        next = "]x",
+        prev = "[x",
+      },
+      jump = {
+        next = "]]",
+        prev = "[[",
+      },
+      sidebar = {
+        show = "<leader>aa",
+        refresh = "<leader>ar",
+        edit_blocks = "<leader>ae",
+      },
+    },
+    windows = {
+      position = "right",
+      width = 30,
+    },
+    highlights = {
+      diff = {
+        current = "DiffText",
+        incoming = "DiffAdd",
+      },
+    },
+  })
+end)
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/core/autocmds.lua
+
+-- ~/.config/nvim/lua/core/autocmds.lua
+
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+
+-- Save view (folds, cursor, etc.)
+autocmd('BufWinLeave', {
+    pattern = '*',
+    command = "if expand('%') != '' | silent! mkview | endif"
+})
+
+-- Activate AnyFold
+autocmd('Filetype', {
+    pattern = '*',
+    command = 'AnyFoldActivate'
+})
+
+-- Clear CtrlP cache on buffer write
+autocmd('BufWritePost', {
+    pattern = '*',
+    command = 'CtrlPClearAllCaches'
+})
+
+-- COC specific autocommands
+local coc_group = augroup('CocGroup', {})
+autocmd('FileType', {
+    group = coc_group,
+    pattern = {'typescript', 'json'},
+    callback = function()
+        vim.bo.formatexpr = "CocAction('formatSelected')"
+    end
+})
+
+autocmd('User', {
+    group = coc_group,
+    pattern = 'CocJumpPlaceholder',
+    command = "call CocActionAsync('showSignatureHelp')"
+})
+
+-- Initialize COC TabNine
+autocmd('User', {
+    pattern = 'CocNvimInit',
+    once = true,
+    callback = function()
+        vim.fn['coc#config']('tabnine', {ignore_all_lsp = true})
+    end
+})
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/core/keymaps.lua
+
+local function map(mode, lhs, rhs, opts)
+    local options = { noremap = true, silent = true }
+    if opts then
+        options = vim.tbl_extend('force', options, opts)
+    end
+    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+end
+
+-- General mappings
+map('n', '<Leader>m', ':source $MYVIMRC<CR>')
+map('n', '<leader>;', ':Commentary<CR>')
+map('n', '<C-s>', ':w!<CR>')
+map('n', '<leader>q', ':q<CR>')
+map('n', '<leader>r', ':source $MYVIMRC<CR>:echo "nvim config reloaded!"<CR>')
+
+map('n', '<leader>f', ':Files<CR>')
+map('n', '<leader>b', ':Buffers<CR>')
+map('n', '<leader>rg', ':Rg<CR>')
+
+map('n', '<leader>qf', '<Plug>(coc-fix-current)')
+map('n', '<leader>dn', '<Plug>(coc-diagnostic-next-error)')
+map('n', '<leader>dp', '<Plug>(coc-diagnostic-prev-error)')
+map('n', 'K', '<Plug>(coc-hover)')
+map('n', '<leader>ty', ':call CocAction("type")<CR>')
+map('n', '<space>e', '<Cmd>CocCommand explorer<CR>')
+map('x', '<leader>ac', '<Plug>(coc-codeaction-selected)')
+map('n', 'gd', '<Plug>(coc-definition)')
+map('n', 'gD', '<Plug>(coc-implementation)')
+map('n', 'gr', '<Plug>(coc-references)')
+map('n', '<leader>rn', '<Plug>(coc-rename)')
+
+map('n', 'gf', ':lua CreateFileIfNotExist()<CR>')
+map('n', 'K', ':lua HandleK()<CR>')
+
+map('n', '<leader>K', ':lua SearchWithFzfFromClipboard()<CR>')
+
+map('n', '<leader>aa', ':AvanteToggle<CR>')
+map('n', '<leader>ar', ':AvanteRefresh<CR>')
+map('n', '<leader>ae', ':AvanteEdit<CR>')
+
+map('', '∆', '<A-j>')
+map('', '˙', '<A-h>')
+map('', '˚', '<A-k>')
+map('', '¬', '<A-l>')
+
+vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
+  desc = "Toggle Spectre"
+})
+vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+  desc = "Search current word"
+})
+vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', {
+  desc = "Search current word"
+})
+vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+  desc = "Search on current file"
+})
+
+vim.api.nvim_set_keymap('n', 'U', '<C-r>', { noremap = true, silent = true })
+
+map('n', '<leader>tw', ':!python3  ~/Project/Projet/transcrib.py &<CR>')
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/core/options.lua
+
+
+local opt = vim.opt
+vim.opt.laststatus = 3
+opt.foldmethod = 'expr'
+opt.foldexpr = 'nvim_treesitter#foldexpr()'
+opt.foldtext = 'v:lua.CustomFoldText()'
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
+opt.binary = true
+opt.eol = false
+opt.fixendofline = false
+opt.hidden = true
+opt.relativenumber = true
+opt.smartcase = true
+opt.incsearch = true
+opt.inccommand = 'split'
+opt.updatetime = 50
+opt.path:append('**')
+opt.termguicolors = true
+opt.expandtab = true
+opt.shiftwidth = 2
+opt.softtabstop = 2
+opt.cursorline = true
+opt.cursorcolumn = true
+opt.encoding = 'UTF-8'
+opt.clipboard = 'unnamed,unnamedplus'
+opt.tabstop = 2
+opt.smarttab = true
+
+vim.g.mapleader = ' '
+vim.cmd('syntax on')
+vim.cmd('colorscheme catppuccin-macchiato')
+vim.g.airline_theme = 'catppuccin'
+
+-- Ignorer les fichiers cachés et dossiers spécifiques dans FZF
+vim.env.FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!**/{node_modules,vendor,.git,__pycache__,build,dist,target,elm-stuff,.idea,.vscode,deps,.venv,Cargo.lock,Cargo.toml,.*}"'
+vim.env.FZF_CTRL_T_COMMAND = 'rg --files --hidden --glob "!**/{node_modules,vendor,.git,__pycache__,build,dist,target,elm-stuff,.idea,.vscode,deps,.venv,Cargo.lock,Cargo.toml,.*}"'
+vim.env.FZF_ALT_C_COMMAND = 'rg --files --hidden --glob "!**/{node_modules,vendor,.git,__pycache__,build,dist,target,elm-stuff,.idea,.vscode,deps,.venv,Cargo.lock,Cargo.toml,.*}"'
+vim.env.FZF_DEFAULT_OPTS = '--height 40% --layout=reverse --ansi --preview="bat --style=numbers --color=always --line-range :500 {}"'
+
+-- Exclure globalement les fichiers cachés et certains dossiers
+opt.wildignore:append({
+  '**/.git/**', 
+  '**/node_modules/**', 
+  '**/vendor/**', 
+  '**/.vscode/**',
+  '**/.idea/**',
+  '**/dist/**',
+  '**/build/**',
+  '**/.DS_Store',
+  '.*'
+})
+
+-- Minimap settings
+vim.g.minimap_width = 10
+vim.g.minimap_auto_start = 1
+vim.g.minimap_auto_start_win_enter = 1
+
+-- SimpylFold settings
+vim.g.SimpylFold_docstring_preview = 1
+
+-- Ag settings
+vim.g.ag_working_path_mode = 'r'
+
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/plugins/configs/accelerated.lua
+
+-- vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
+-- vim.api.nvim_set_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+--
+-- vim.g.accelerated_jk_acceleration_limit = 150
+-- vim.g.accelerated_jk_acceleration_table = {1, 10, 20, 40, 60}
+-- vim.g.accelerated_jk_enable_deceleration = 1
+-- vim.g.accelerated_jk_deceleration_table = {150, 300, 500}
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/plugins/configs/avante.lua
+
+local status_ok, avante = pcall(require, "avante")
+if not status_ok then
+  print("avante is not installed")
+  return
+end
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/plugins/configs/coc.lua
+
+local function coc_config(key, value)
+  vim.fn['coc#config'](key, value)
+end
+
+coc_config('hover', {
+  target = 'float',
+  maxWidth = 120,
+  float = {
+    border = {'│', '─', '│', '│', '┌', '┐', '┘', '└'},
+    highlight = 'CocFloating'
+  }
+})
+
+coc_config('suggest.timeout', 5000)
+coc_config('signature.target', 'float')
+coc_config('hover.floatConfig', {
+  maxWidth = 120,
+  maxHeight = 30
+})
+
+coc_config('typescript', {
+  suggest = {
+    completeFunctionCalls = true,
+    includeCompletionsForImportStatements = true,
+    includeCompletionsWithSnippetText = true,
+  },
+  implementationsCodeLens = { enable = true },
+  referencesCodeLens = { enable = true },
+  inlayHints = {
+    includeInlayParameterNameHints = 'all',
+    includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+    includeInlayFunctionParameterTypeHints = true,
+    includeInlayVariableTypeHints = true,
+    includeInlayPropertyDeclarationTypeHints = true,
+    includeInlayFunctionLikeReturnTypeHints = true,
+  }
+})
+
+vim.g.coc_global_extensions = {
+  'coc-snippets', 'coc-pairs', 'coc-tsserver', 'coc-eslint', 
+  'coc-prettier', 'coc-json', 'coc-explorer', 'coc-tabnine', 
+  'coc-git', 'coc-react-refactor'
+}
+
+-- Function to show detailed type info
+vim.cmd[[
+function! ShowDetailedTypeInfo()
+  call CocActionAsync('doHover')
+  call CocActionAsync('showOutline')
+endfunction
+]]
+
+map('n', '<leader>K', ':lua SearchWithFzfFromClipboard()<CR>')
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/plugins/configs/spectre.lua
+
+print("spectre ---")
+
+require('spectre').setup({
+  color_devicons = true, -- Afficher les icônes colorées
+  open_cmd = 'vnew | vertical resize 40', -- Ouvrir les résultats dans une nouvelle fenêtre
+  live_update = false, -- Rechercher automatiquement quand tu édites un fichier
+  lnum_for_results = true, -- Afficher les numéros de ligne dans les résultats
+  width = 200,
+  result_padding = '¦  ',
+  line_sep_start = '┌-----------------------------------------',
+  line_sep = '└-----------------------------------------',
+  highlight = {
+      ui = "String",
+      search = "DiffChange",
+      replace = "DiffDelete"
+  },
+  mapping = {
+    -- Configuration des raccourcis personnalisés
+    ['tab'] = {
+        map = '<Tab>',
+        cmd = "<cmd>lua require('spectre').tab()<cr>",
+        desc = 'Next query'
+    },
+    ['enter_file'] = {
+        map = "<cr>",
+        cmd = "<cmd>lua require('spectre.actions').select_entry()<CR>",
+        desc = "Open file"
+    },
+    ['run_replace'] = {
+        map = "<leader>R",
+        cmd = "<cmd>lua require('spectre.actions').run_replace()<CR>",
+        desc = "Replace all"
+    },
+    ['toggle_ignore_case'] = {
+      map = "ti",
+      cmd = "<cmd>lua require('spectre').change_options('ignore-case')<CR>",
+      desc = "Toggle ignore case"
+    },
+    ['toggle_ignore_hidden'] = {
+      map = "th",
+      cmd = "<cmd>lua require('spectre').change_options('hidden')<CR>",
+      desc = "Toggle search hidden"
+    }
+  }
+})
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/plugins/configs/treesitter.lua
+
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { 
+    "javascript", "typescript", "tsx", "html", "css", 
+    "c", "lua", "vim", "vimdoc", "query", "markdown", 
+    "markdown_inline", "vue" 
+  },
+  auto_install = true,
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true
+  },
+}
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/plugins/configs/which_key.lua
+
+require("which-key").setup {
+  plugins = {
+    spelling = { enabled = true },  
+  },
+  window = {
+    border = "single",
+  },
+  layout = {
+    height = { min = 20, max = 45 },
+    width = { min = 20, max = 50 },
+  },
+  triggers = "auto",
+}
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/plugins/init.lua
+
+local fn = vim.fn
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+
+if fn.empty(fn.glob(install_path)) > 0 then
+  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  vim.cmd [[packadd packer.nvim]]
+end
+
+
+
+return require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'
+
+  use {
+    'nvim-pack/nvim-spectre',
+    requires = {'nvim-lua/plenary.nvim', 'kyazdani42/nvim-web-devicons'}
+  }
+  use { 'junegunn/fzf', run = './install --bin' }
+  use { 'junegunn/fzf.vim' }
+
+  -- Your plugins here
+  --
+  use 'folke/which-key.nvim'
+  use 'matze/vim-move'
+  use 'roxma/vim-tmux-clipboard'
+  use 'neoclide/coc.nvim'
+  use 'folke/tokyonight.nvim'
+  use 'tmux-plugins/vim-tmux-focus-events'
+  use 'christoomey/vim-tmux-navigator'
+  use 'cohama/lexima.vim'
+  use 'preservim/nerdcommenter'
+  use 'tpope/vim-surround'
+  use 'kien/ctrlp.vim'
+  use 'thaerkh/vim-indentguides'
+  use 'lucasprag/simpleblack'
+  use 'prabirshrestha/vim-lsp'
+  use 'mattn/vim-lsp-settings'
+  use {'neoclide/coc.nvim', branch = 'release'}
+  use 'petertriho/nvim-scrollbar'
+  use 'nathanaelkane/vim-indent-guides'
+  use 'christoomey/vim-system-copy'
+  use 'wfxr/minimap.vim'
+  use 'vim-airline/vim-airline'
+  use 'vim-airline/vim-airline-themes'
+  use 'ryanoasis/vim-devicons'
+  use 'kyazdani42/nvim-web-devicons'
+  use 'romgrk/barbar.nvim'
+  use 'mhinz/vim-startify'
+  use 'junegunn/fzf'
+  use {'catppuccin/nvim', as = 'catppuccin'}
+  use {'mg979/vim-visual-multi', branch = 'master'}
+  use 'tpope/vim-fugitive'
+  use 'junegunn/gv.vim'
+  use 'neoclide/coc-tabnine'
+  use 'antosha417/nvim-lsp-file-operations'
+  use 'nvim-lua/plenary.nvim'
+  use 'nvim-tree/nvim-tree.lua'
+  use 'tmhedberg/simpylfold'
+  use 'mhinz/vim-signify'
+  use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+  use 'pseewald/vim-anyfold'
+  use 'onsails/lspkind-nvim'
+  use 'stevearc/dressing.nvim'
+  use 'MunifTanjim/nui.nvim'
+  use 'echasnovski/mini.icons'
+  use 'HakonHarnes/img-clip.nvim'
+  use 'zbirenbaum/copilot.lua'
+  use 'ibhagwan/fzf-lua'
+
+
+  if packer_bootstrap then
+    require('packer').sync()
+  end
+end)
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/lua/utils/functions.lua
+
+
+
+
+
+-- Custom fold text function
+function _G.CustomFoldText()
+  local line = vim.fn.getline(vim.v.foldstart)
+  local num_lines = vim.v.foldend - vim.v.foldstart + 1
+  local fold_marker = '+ ' .. num_lines .. ' lignes pliées ' .. ' +++'
+  return line .. string.rep(' ', vim.fn.winwidth(0) - #line - #fold_marker) .. fold_marker
+end
+
+-- Function to create file if it doesn't exist
+function _G.CreateFileIfNotExist()
+  local file = vim.fn.expand('<cfile>')
+  local current_file = vim.fn.expand('%:p')
+  local current_file_dir = vim.fn.fnamemodify(current_file, ':h')
+  local current_extension = vim.fn.fnamemodify(current_file, ':e')
+
+  local src_dir = vim.fn.finddir('src', current_file_dir .. ';')
+
+  if file:sub(1,1) == '@' then
+    file = src_dir .. '/' .. file:sub(2)
+  elseif file:sub(1,2) == './' then
+    file = current_file_dir .. '/' .. file:sub(3)
+  elseif file:sub(1,1) ~= '/' then
+    file = current_file_dir .. '/' .. file
+  end
+
+  if vim.fn.fnamemodify(file, ':e') == '' then
+    file = file .. '.' .. current_extension
+  end
+
+  local normalized_file = vim.fn.fnamemodify(file, ':p')
+
+  if vim.fn.filereadable(normalized_file) == 1 or vim.fn.isdirectory(normalized_file) == 1 then
+    vim.cmd('edit ' .. vim.fn.fnameescape(normalized_file))
+  else
+    local dir = vim.fn.fnamemodify(normalized_file, ':h')
+    if vim.fn.isdirectory(dir) == 0 then
+      local create_dir = vim.fn.input('Le répertoire n\'existe pas. Le créer ? (y/n): ')
+      if create_dir:lower() == 'y' then
+        vim.fn.mkdir(dir, 'p')
+      else
+        print("Annulé.")
+        return
+      end
+    end
+
+    local new_name = vim.fn.input('Fichier non trouvé. Créer le fichier : ', normalized_file, 'file')
+    if new_name ~= '' then
+      vim.cmd('edit ' .. vim.fn.fnameescape(new_name))
+    end
+  end
+end
+
+-- Function to handle K keypress
+function _G.HandleK()
+  local filetype = vim.bo.filetype
+  if filetype == 'typescript' or filetype == 'typescriptreact' then
+    local success, result = pcall(require('utils.functions').GetTypeAtCursor)
+    if not success then
+      print("Erreur lors de l'appel à GetTypeAtCursor: " .. result)  -- Afficher l'erreur si échec
+    else
+      print("GetTypeAtCursor a été appelée avec succès")  -- Si tout va bien
+    end
+  else
+    vim.cmd('normal! K')
+  end
+end
+
+
+function _G.SearchWithFzfFromClipboard()
+  local clipboard_content = vim.fn.getreg('+')
+  if #clipboard_content > 0 then
+    vim.cmd('Rg ' .. clipboard_content)
+  else
+    print("Le presse-papiers est vide.")
+  end
+end
+
+function _G.ReplaceAllWithFzf()
+  -- Récupérer le texte à rechercher dans le presse-papiers
+  local search_text = vim.fn.input('Texte à rechercher: ', vim.fn.getreg('+'))
+  
+  if #search_text == 0 then
+    print("Texte de recherche vide.")
+    return
+  end
+
+  -- Demander le texte de remplacement
+  local replace_text = vim.fn.input('Texte de remplacement: ')
+  
+  if #replace_text == 0 then
+    print("Texte de remplacement vide.")
+    return
+  end
+
+  -- Commande ripgrep pour rechercher les occurrences du texte
+  local rg_command = 'rg --vimgrep ' .. vim.fn.shellescape(search_text)
+
+  -- Utilisation de `fzf` pour afficher les résultats et permettre la sélection
+  local fzf_command = ' | fzf --preview "bat --style=numbers --color=always --highlight-line {2}" --multi'
+
+  -- Exécuter la recherche et récupérer les fichiers sélectionnés
+  local results = vim.fn.systemlist(rg_command .. fzf_command)
+  
+  if #results == 0 then
+    print("Aucune sélection effectuée.")
+    return
+  end
+
+  -- Remplacer le texte dans chaque fichier sélectionné
+  for _, line in ipairs(results) do
+    -- Extraire le nom du fichier et la ligne depuis le résultat
+    local filepath = string.match(line, "([^:]+):")
+    local cmd = 'sed -i "" "s/' .. vim.fn.escape(search_text, '/') .. '/' .. vim.fn.escape(replace_text, '/') .. '/g" ' .. filepath
+    -- Exécuter la commande de remplacement
+    vim.fn.system(cmd)
+  end
+
+  print("Remplacement terminé.")
+end
+
+
+-- Make these functions global so they can be called from anywhere
+vim.cmd[[
+command! -nargs=0 CreateFileIfNotExist lua CreateFileIfNotExist()
+command! -nargs=0 HandleK lua HandleK()
+command! -nargs=0 SearchWithAgFromClipboard lua SearchWithAgFromClipboard()
+]]
+
+local M = {}
+
+local type_win = -1  -- Garde la trace de la fenêtre flottante
+
+-- Fonction pour récupérer le type au survol avec logs
+function M.GetTypeAtCursor()
+  -- Récupère le fichier actuel et la position du curseur
+  local file = vim.fn.expand('%:p')
+  local line = vim.fn.line('.') - 1
+  local col = vim.fn.col('.') - 1
+
+  -- Récupère le mot sous le curseur
+  local cword = vim.fn.expand('<cword>')
+
+  -- Exécute le script Node.js pour récupérer le type à cette position
+  local command = 'node ~/.config/nvim/get-type-info.js ' .. file .. ' ' .. (line * 1000 + col) .. ' ' .. cword
+
+  -- Récupère la sortie du script
+  local output = vim.fn.system(command)
+
+  -- Formate la sortie JSON pour un affichage lisible
+  local formatted_output
+  local success, json_output = pcall(vim.fn.json_decode, output)
+  if success then
+    formatted_output = vim.fn.json_encode(json_output, { indent = 2 })
+  else
+    -- Si l'analyse JSON échoue, affiche la sortie brute
+    formatted_output = output
+  end
+
+  -- Calcul de la largeur et de la hauteur en fonction du contenu
+  local lines = vim.split(formatted_output, "\n")
+  local max_width = 0
+  for _, line in ipairs(lines) do
+    max_width = math.max(#line, max_width)
+  end
+  local height = #lines
+  local width = math.min(max_width, vim.o.columns - 4) -- Limite la largeur à presque la largeur totale de l'écran
+
+  -- Ajuste la hauteur pour qu'elle ne dépasse pas une limite raisonnable
+  height = math.min(height, vim.o.lines - 4) -- Limite la hauteur pour ne pas dépasser la taille de l'écran
+
+  -- Affiche la sortie formatée dans une fenêtre flottante
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+  vim.api.nvim_open_win(buf, true, {
+    relative = 'cursor',
+    width = width,
+    height = height,
+    col = 1,
+    row = 1,
+    style = 'minimal',
+    border = 'rounded', -- Ajoute des bords arrondis pour un look plus propre
+  })
+
+  -- Affiche un message de confirmation
+  print("Type info affiché dans une fenêtre flottante")
+end
+
+
+-- Fonction pour fermer la fenêtre flottante
+function M.CloseTypeWindow()
+  if type_win ~= -1 then
+    vim.api.nvim_win_close(type_win, true)
+    type_win = -1
+    print("CloseTypeWindow: Fenêtre flottante fermée.")  -- Log lors de la fermeture
+  end
+end
+
+function split_string(inputstr, sep)
+  if sep == nil then
+    sep = "%s" -- Si aucun séparateur n'est fourni, utilise l'espace
+  end
+  local t = {}
+  for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+    table.insert(t, str)
+  end
+  return t
+end
+
+function CopyMessagesToClipboard()
+  vim.cmd([[redir => output]])
+  vim.cmd([[silent messages]])
+  vim.cmd([[redir END]])
+
+  vim.fn.setreg('+', output)
+
+  print("All messages copied to clipboard!")
+end
+
+
+vim.api.nvim_create_user_command('CopyMessages', CopyMessagesToClipboard, {})
+
+
+local function js_to_ts()
+  -- Demander à l'utilisateur d'entrer le nom de l'interface (par défaut "RootObject")
+  local interface_name = vim.fn.input('Enter the name of the interface (default: RootObject): ')
+  if interface_name == '' then
+    interface_name = 'RootObject'
+  end
+
+  -- Récupérer le contenu du presse-papier
+  local clipboard_input = vim.fn.getreg('+')
+
+  -- Construire la commande pour exécuter le script Node.js
+  local command = 'node ~/.config/nvim/generate-types.js ' .. vim.fn.shellescape(clipboard_input) .. ' ' .. vim.fn.shellescape(interface_name)
+
+  -- Exécuter la commande
+  local typescript_output = vim.fn.system(command)
+
+  -- Vérifier s'il y a une erreur lors de l'exécution du script
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({{'Error: Could not generate TypeScript types', 'ErrorMsg'}}, false, {})
+    vim.api.nvim_echo({{typescript_output, 'ErrorMsg'}}, false, {})
+    return
+  end
+
+  -- Copier le résultat dans le presse-papier
+  vim.fn.setreg('+', typescript_output)
+  vim.api.nvim_echo({{'TypeScript interface copied to clipboard!', 'None'}}, false, {})
+end
+
+-- Créer la commande Neovim pour appeler la fonction
+vim.api.nvim_create_user_command('JsToTs', js_to_ts, {})
+
+
+return M
+
+
+---------
+/// /Users/cheikkone49/.config/nvim/plugin/packer_compiled.lua
+
+-- Automatically generated packer.nvim plugin loader code
+
+if vim.api.nvim_call_function('has', {'nvim-0.5'}) ~= 1 then
+  vim.api.nvim_command('echohl WarningMsg | echom "Invalid Neovim version for packer.nvim! | echohl None"')
+  return
+end
+
+vim.api.nvim_command('packadd packer.nvim')
+
+local no_errors, error_msg = pcall(function()
+
+_G._packer = _G._packer or {}
+_G._packer.inside_compile = true
+
+local time
+local profile_info
+local should_profile = false
+if should_profile then
+  local hrtime = vim.loop.hrtime
+  profile_info = {}
+  time = function(chunk, start)
+    if start then
+      profile_info[chunk] = hrtime()
+    else
+      profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
+    end
+  end
+else
+  time = function(chunk, start) end
+end
+
+local function save_profiles(threshold)
+  local sorted_times = {}
+  for chunk_name, time_taken in pairs(profile_info) do
+    sorted_times[#sorted_times + 1] = {chunk_name, time_taken}
+  end
+  table.sort(sorted_times, function(a, b) return a[2] > b[2] end)
+  local results = {}
+  for i, elem in ipairs(sorted_times) do
+    if not threshold or threshold and elem[2] > threshold then
+      results[i] = elem[1] .. ' took ' .. elem[2] .. 'ms'
+    end
+  end
+  if threshold then
+    table.insert(results, '(Only showing plugins that took longer than ' .. threshold .. ' ms ' .. 'to load)')
+  end
+
+  _G._packer.profile_output = results
+end
+
+time([[Luarocks path setup]], true)
+local package_path_str = "/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/share/lua/5.1/?.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/share/lua/5.1/?/init.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/lib/luarocks/rocks-5.1/?.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/lib/lua/5.1/?.so"
+if not string.find(package.path, package_path_str, 1, true) then
+  package.path = package.path .. ';' .. package_path_str
+end
+
+if not string.find(package.cpath, install_cpath_pattern, 1, true) then
+  package.cpath = package.cpath .. ';' .. install_cpath_pattern
+end
+
+time([[Luarocks path setup]], false)
+time([[try_loadstring definition]], true)
+local function try_loadstring(s, component, name)
+  local success, result = pcall(loadstring(s), name, _G.packer_plugins[name])
+  if not success then
+    vim.schedule(function()
+      vim.api.nvim_notify('packer.nvim: Error running ' .. component .. ' for ' .. name .. ': ' .. result, vim.log.levels.ERROR, {})
+    end)
+  end
+  return result
+end
+
+time([[try_loadstring definition]], false)
+time([[Defining packer_plugins]], true)
+_G.packer_plugins = {
+  ["barbar.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/barbar.nvim",
+    url = "https://github.com/romgrk/barbar.nvim"
+  },
+  catppuccin = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/catppuccin",
+    url = "https://github.com/catppuccin/nvim"
+  },
+  ["coc-tabnine"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/coc-tabnine",
+    url = "https://github.com/neoclide/coc-tabnine"
+  },
+  ["coc.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/coc.nvim",
+    url = "https://github.com/neoclide/coc.nvim"
+  },
+  ["copilot.lua"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/copilot.lua",
+    url = "https://github.com/zbirenbaum/copilot.lua"
+  },
+  ["ctrlp.vim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/ctrlp.vim",
+    url = "https://github.com/kien/ctrlp.vim"
+  },
+  ["dressing.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/dressing.nvim",
+    url = "https://github.com/stevearc/dressing.nvim"
+  },
+  fzf = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/fzf",
+    url = "https://github.com/junegunn/fzf"
+  },
+  ["fzf-lua"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/fzf-lua",
+    url = "https://github.com/ibhagwan/fzf-lua"
+  },
+  ["fzf.vim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/fzf.vim",
+    url = "https://github.com/junegunn/fzf.vim"
+  },
+  ["gv.vim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/gv.vim",
+    url = "https://github.com/junegunn/gv.vim"
+  },
+  ["img-clip.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/img-clip.nvim",
+    url = "https://github.com/HakonHarnes/img-clip.nvim"
+  },
+  ["lexima.vim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/lexima.vim",
+    url = "https://github.com/cohama/lexima.vim"
+  },
+  ["lspkind-nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/lspkind-nvim",
+    url = "https://github.com/onsails/lspkind-nvim"
+  },
+  ["mini.icons"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/mini.icons",
+    url = "https://github.com/echasnovski/mini.icons"
+  },
+  ["minimap.vim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/minimap.vim",
+    url = "https://github.com/wfxr/minimap.vim"
+  },
+  nerdcommenter = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nerdcommenter",
+    url = "https://github.com/preservim/nerdcommenter"
+  },
+  ["nui.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nui.nvim",
+    url = "https://github.com/MunifTanjim/nui.nvim"
+  },
+  ["nvim-lsp-file-operations"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-lsp-file-operations",
+    url = "https://github.com/antosha417/nvim-lsp-file-operations"
+  },
+  ["nvim-scrollbar"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-scrollbar",
+    url = "https://github.com/petertriho/nvim-scrollbar"
+  },
+  ["nvim-spectre"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-spectre",
+    url = "https://github.com/nvim-pack/nvim-spectre"
+  },
+  ["nvim-tree.lua"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
+    url = "https://github.com/nvim-tree/nvim-tree.lua"
+  },
+  ["nvim-treesitter"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
+  ["nvim-web-devicons"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
+    url = "https://github.com/kyazdani42/nvim-web-devicons"
+  },
+  ["packer.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/packer.nvim",
+    url = "https://github.com/wbthomason/packer.nvim"
+  },
+  ["plenary.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/plenary.nvim",
+    url = "https://github.com/nvim-lua/plenary.nvim"
+  },
+  simpleblack = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/simpleblack",
+    url = "https://github.com/lucasprag/simpleblack"
+  },
+  simpylfold = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/simpylfold",
+    url = "https://github.com/tmhedberg/simpylfold"
+  },
+  ["tokyonight.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
+    url = "https://github.com/folke/tokyonight.nvim"
+  },
+  ["vim-airline"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-airline",
+    url = "https://github.com/vim-airline/vim-airline"
+  },
+  ["vim-airline-themes"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-airline-themes",
+    url = "https://github.com/vim-airline/vim-airline-themes"
+  },
+  ["vim-anyfold"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-anyfold",
+    url = "https://github.com/pseewald/vim-anyfold"
+  },
+  ["vim-devicons"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-devicons",
+    url = "https://github.com/ryanoasis/vim-devicons"
+  },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
+  },
+  ["vim-indent-guides"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-indent-guides",
+    url = "https://github.com/nathanaelkane/vim-indent-guides"
+  },
+  ["vim-indentguides"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-indentguides",
+    url = "https://github.com/thaerkh/vim-indentguides"
+  },
+  ["vim-lsp"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-lsp",
+    url = "https://github.com/prabirshrestha/vim-lsp"
+  },
+  ["vim-lsp-settings"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-lsp-settings",
+    url = "https://github.com/mattn/vim-lsp-settings"
+  },
+  ["vim-move"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-move",
+    url = "https://github.com/matze/vim-move"
+  },
+  ["vim-signify"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-signify",
+    url = "https://github.com/mhinz/vim-signify"
+  },
+  ["vim-startify"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-startify",
+    url = "https://github.com/mhinz/vim-startify"
+  },
+  ["vim-surround"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-surround",
+    url = "https://github.com/tpope/vim-surround"
+  },
+  ["vim-system-copy"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-system-copy",
+    url = "https://github.com/christoomey/vim-system-copy"
+  },
+  ["vim-tmux-clipboard"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-tmux-clipboard",
+    url = "https://github.com/roxma/vim-tmux-clipboard"
+  },
+  ["vim-tmux-focus-events"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-tmux-focus-events",
+    url = "https://github.com/tmux-plugins/vim-tmux-focus-events"
+  },
+  ["vim-tmux-navigator"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-tmux-navigator",
+    url = "https://github.com/christoomey/vim-tmux-navigator"
+  },
+  ["vim-visual-multi"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-visual-multi",
+    url = "https://github.com/mg979/vim-visual-multi"
+  },
+  ["which-key.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/which-key.nvim",
+    url = "https://github.com/folke/which-key.nvim"
+  }
+}
+
+time([[Defining packer_plugins]], false)
+
+_G._packer.inside_compile = false
+if _G._packer.needs_bufread == true then
+  vim.cmd("doautocmd BufRead")
+end
+_G._packer.needs_bufread = false
+
+if should_profile then save_profiles() end
+
+end)
+
+if not no_errors then
+  error_msg = error_msg:gsub('"', '\\"')
+  vim.api.nvim_command('echohl ErrorMsg | echom "Error in packer_compiled: '..error_msg..'" | echom "Please check your config for correctness" | echohl None')
+end
+

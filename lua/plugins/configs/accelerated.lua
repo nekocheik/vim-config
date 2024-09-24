@@ -1,0 +1,7 @@
+-- vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
+-- vim.api.nvim_set_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+--
+-- vim.g.accelerated_jk_acceleration_limit = 150
+-- vim.g.accelerated_jk_acceleration_table = {1, 10, 20, 40, 60}
+-- vim.g.accelerated_jk_enable_deceleration = 1
+-- vim.g.accelerated_jk_deceleration_table = {150, 300, 500}
