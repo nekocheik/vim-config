@@ -26,16 +26,28 @@ return require('packer').startup(function(use)
   use { 'junegunn/fzf', run = './install --bin' }
   use { 'junegunn/fzf.vim' }
 
+  use 'AndrewRadev/tagalong.vim'
   -- Your plugins here
   --
   use 'folke/which-key.nvim'
   use 'matze/vim-move'
   use 'roxma/vim-tmux-clipboard'
+  use 'anhpt379/nvim-cursorword'
   use {'neoclide/coc.nvim',branch = 'master', run = 'npm ci', }
   use 'folke/tokyonight.nvim'
   use 'tmux-plugins/vim-tmux-focus-events'
+  use 'AndrewRadev/tagalong.vim'
+  -- use 'windwp/nvim-ts-autotag'
+  use 'azabiong/vim-highlighter'
+  use 'terryma/vim-expand-region'
+  use 'tpope/vim-obsession'
+  -- use 'dominickng/fzf-session.vim'
+  use {
+    'andymass/vim-matchup',
+  }
+  use 'alvan/vim-closetag'
+  use 'jiangmiao/auto-pairs'
   use 'christoomey/vim-tmux-navigator'
-  use 'cohama/lexima.vim'
   use 'preservim/nerdcommenter'
   use 'tpope/vim-surround'
   use 'thaerkh/vim-indentguides'
@@ -45,7 +57,6 @@ return require('packer').startup(function(use)
   use 'petertriho/nvim-scrollbar'
   use 'nathanaelkane/vim-indent-guides'
   use 'christoomey/vim-system-copy'
-  use 'wfxr/minimap.vim'
   use 'vim-airline/vim-airline'
   use 'vim-airline/vim-airline-themes'
   use 'ryanoasis/vim-devicons'
@@ -59,7 +70,7 @@ return require('packer').startup(function(use)
   use 'neoclide/coc-tabnine'
   use 'antosha417/nvim-lsp-file-operations'
   use 'nvim-lua/plenary.nvim'
-  use 'RRethy/vim-illuminate'
+
   use 'nvim-tree/nvim-tree.lua'
   use 'tmhedberg/simpylfold'
   use 'mhinz/vim-signify'
@@ -74,7 +85,12 @@ return require('packer').startup(function(use)
   use 'ibhagwan/fzf-lua'
 
 
+
+
+  vim.g.matchup_matchparen_offscreen = { method = "popup" }
   if packer_bootstrap then
     require('packer').sync()
   end
 end)
+
+

@@ -48,12 +48,16 @@ end)
 
 -- Chargez vos autres configurations ici
 require('core.keymaps')
+require('core.underlineworld')
 require('core.autocmds')
 require('plugins')
 
 -- require('lua.plugins.configs.avante')
 require('plugins.configs.spectre')
 require('plugins.configs.accelerated')
+require('plugins.configs.scrollbar')
+require('plugins.configs.sessions')
+require('plugins.configs.cmp')
 require('utils.functions')
 
 

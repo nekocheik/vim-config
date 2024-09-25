@@ -74,6 +74,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["auto-pairs"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/auto-pairs",
+    url = "https://github.com/jiangmiao/auto-pairs"
+  },
   ["barbar.nvim"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/barbar.nvim",
@@ -129,11 +134,6 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/img-clip.nvim",
     url = "https://github.com/HakonHarnes/img-clip.nvim"
   },
-  ["lexima.vim"] = {
-    loaded = true,
-    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/lexima.vim",
-    url = "https://github.com/cohama/lexima.vim"
-  },
   ["lspkind-nvim"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/lspkind-nvim",
@@ -144,11 +144,6 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/mini.icons",
     url = "https://github.com/echasnovski/mini.icons"
   },
-  ["minimap.vim"] = {
-    loaded = true,
-    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/minimap.vim",
-    url = "https://github.com/wfxr/minimap.vim"
-  },
   nerdcommenter = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nerdcommenter",
@@ -158,6 +153,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nui.nvim",
     url = "https://github.com/MunifTanjim/nui.nvim"
+  },
+  ["nvim-cursorword"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-cursorword",
+    url = "https://github.com/anhpt379/nvim-cursorword"
   },
   ["nvim-lsp-file-operations"] = {
     loaded = true,
@@ -183,6 +183,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
+  ["nvim-ts-autotag"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-ts-autotag",
+    url = "https://github.com/windwp/nvim-ts-autotag"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
@@ -229,15 +234,30 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-anyfold",
     url = "https://github.com/pseewald/vim-anyfold"
   },
+  ["vim-closetag"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-closetag",
+    url = "https://github.com/alvan/vim-closetag"
+  },
   ["vim-devicons"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-devicons",
     url = "https://github.com/ryanoasis/vim-devicons"
   },
+  ["vim-expand-region"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-expand-region",
+    url = "https://github.com/terryma/vim-expand-region"
+  },
   ["vim-fugitive"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-fugitive",
     url = "https://github.com/tpope/vim-fugitive"
+  },
+  ["vim-highlighter"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-highlighter",
+    url = "https://github.com/azabiong/vim-highlighter"
   },
   ["vim-indent-guides"] = {
     loaded = true,
@@ -259,10 +279,20 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-lsp-settings",
     url = "https://github.com/mattn/vim-lsp-settings"
   },
+  ["vim-matchup"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-matchup",
+    url = "https://github.com/andymass/vim-matchup"
+  },
   ["vim-move"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-move",
     url = "https://github.com/matze/vim-move"
+  },
+  ["vim-obsession"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-obsession",
+    url = "https://github.com/tpope/vim-obsession"
   },
   ["vim-signify"] = {
     loaded = true,

@@ -1,0 +1,34 @@
+-- -- Fonction pour mettre la sélection dans la barre de recherche et lancer la recherche
+-- local function search_visual_selection()
+--   -- Obtenir la position du début et de la fin de la sélection
+--   local _, start_line, start_col, _ = unpack(vim.fn.getpos("'<"))
+--   local _, end_line, end_col, _ = unpack(vim.fn.getpos("'>"))
+--
+--   -- Si la sélection s'étend sur plusieurs lignes, la recherche ne fonctionne que sur une ligne pour simplifier
+--   if start_line ~= end_line then
+--     print("La sélection multi-lignes n'est pas supportée pour cette recherche")
+--     return
+--   end
+--
+--   -- Obtenir le texte sélectionné
+--   local selected_text = vim.fn.getline(start_line):sub(start_col, end_col)
+--
+--   -- S'assurer qu'il y a une sélection non vide
+--   if #selected_text > 0 then
+--     -- Mettre le texte sélectionné dans la barre de recherche
+--     vim.fn.setreg("/", selected_text)
+--
+--     -- Lancer la recherche du texte sélectionné
+--     vim.cmd("normal! n")
+--   end
+-- end
+--
+-- -- Autocommande pour déclencher la recherche à chaque mouvement en mode visuel
+-- vim.api.nvim_create_autocmd({"CursorMoved"}, {
+--   pattern = "*",
+--   callback = function()
+--     if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
+--       search_visual_selection()
+--     end
+--   end
+-- })

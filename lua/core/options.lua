@@ -63,3 +63,15 @@ vim.g.SimpylFold_docstring_preview = 1
 -- Ag settings
 vim.g.ag_working_path_mode = 'r'
 
+
+require'fzf-lua'.setup {
+  sessions = {
+    path = vim.fn.expand(vim.g.workspace_session_directory),
+    autosave = false,  -- Sauvegarde automatique des sessions
+    post_save_cmd = nil,
+    post_load_cmd = nil,
+  }
+}
+
+-- Touche de raccourci pour afficher les sessions avec fzf-lua
+vim.api.nvim_set_keymap('n', '<leader>ss', ':FzfLua sessions<CR>', { noremap = true, silent = true })
