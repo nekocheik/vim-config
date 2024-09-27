@@ -1,8 +1,22 @@
 local fzf_session = {}
 
+-- Fonction pour trouver le répertoire racine du projet
+local function find_project_root(start_path)
+  local path = start_path or vim.fn.getcwd()
+  local previous_path = nil
+  while path ~= previous_path do
+    if vim.fn.isdirectory(path .. "/.git") == 1 then
+      return path
+    end
+    previous_path = path
+    path = vim.fn.fnamemodify(path, ':h')
+  end
+  return start_path or vim.fn.getcwd()
+end
+
 -- Obtenir le chemin du répertoire de session pour le projet actuel
 function fzf_session.path()
-  local project_root = vim.fn.getcwd()
+  local project_root = find_project_root()
   return project_root .. '/.vim_sessions'
 end
 

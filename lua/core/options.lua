@@ -74,4 +74,4 @@ require'fzf-lua'.setup {
 }
 
 -- Touche de raccourci pour afficher les sessions avec fzf-lua
-vim.api.nvim_set_keymap('n', '<leader>ss', ':FzfLua sessions<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ss', ':Sessions<CR>', { noremap = true, silent = true })

@@ -146,7 +146,7 @@ later(function()
       model = "llama3-70b-8192",
       temperature = 0.1,
       max_tokens = 4096,
-      api_key = "d8f2407e-bae3-45b5-a04a-aff0f5d93d99",
+      api_key = "4c930953-643e-4d34-84eb-fe58f0afdb30",
     },
     behaviour = {
       auto_suggestions = false,

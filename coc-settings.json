@@ -29,6 +29,7 @@
   "git.removedSign.hlGroup": "GitGutterDelete",
   "git.topRemovedSign.hlGroup": "GitGutterDelete",
   "git.changeRemovedSign.hlGroup": "GitGutterChangeDelete",
+  "prettier.formatterPriority": 10,
   "tabnine.limit": 3,
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",

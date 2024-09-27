@@ -32,6 +32,7 @@ return require('packer').startup(function(use)
   use 'folke/which-key.nvim'
   use 'matze/vim-move'
   use 'roxma/vim-tmux-clipboard'
+  use "NvChad/nvim-colorizer.lua"
   use 'anhpt379/nvim-cursorword'
   use {'neoclide/coc.nvim',branch = 'master', run = 'npm ci', }
   use 'folke/tokyonight.nvim'
@@ -83,6 +84,8 @@ return require('packer').startup(function(use)
   use 'HakonHarnes/img-clip.nvim'
   use 'zbirenbaum/copilot.lua'
   use 'ibhagwan/fzf-lua'
+  use "sindrets/diffview.nvim" 
+
 
 
 
