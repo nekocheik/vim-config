@@ -87,7 +87,20 @@ now(function()
 end)
 
 -- Dépendances optionnelles
-add({ source = 'zbirenbaum/copilot.lua' })
+add({ 
+  source = 'github/copilot.vim',
+  hooks = {
+    post_checkout = function()
+      -- Configuration des mappings Copilot
+      vim.g.copilot_no_tab_map = true
+      vim.api.nvim_set_keymap('i', '<C-J>', 'copilot#Accept("<CR>")', { expr = true, silent = true })
+      vim.api.nvim_set_keymap('i', '<M-]>', '<Plug>(copilot-next)', {})
+      vim.api.nvim_set_keymap('i', '<M-[>', '<Plug>(copilot-previous)', {})
+      vim.api.nvim_set_keymap('i', '<C-\\>', '<Plug>(copilot-dismiss)', {})
+      vim.api.nvim_set_keymap('i', '<M-\\>', '<Plug>(copilot-suggest)', {})
+    end
+  }
+})
 add({ source = 'HakonHarnes/img-clip.nvim' })
 add({ source = 'MeanderingProgrammer/render-markdown.nvim' })
 
