@@ -15,4 +15,3 @@ require('plugins.configs.accelerated')
 require('plugins.configs.scrollbar')
 require('plugins.configs.sessions') 
 require('utils.functions')
-

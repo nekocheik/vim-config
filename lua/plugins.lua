@@ -18,9 +18,6 @@ return require('packer').startup(function(use)
   use { 'junegunn/fzf', run = './install --bin' }
   use { 'junegunn/fzf.vim' }
 
-  use 'AndrewRadev/tagalong.vim'
-  -- Your plugins here
-  --
   use 'folke/which-key.nvim'
   use 'matze/vim-move'
   use 'roxma/vim-tmux-clipboard'
