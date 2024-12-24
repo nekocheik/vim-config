@@ -240,7 +240,7 @@ _G.packer_plugins = {
     url = "https://github.com/vim-airline/vim-airline-themes"
   },
   ["vim-anyfold"] = {
-    config = { "\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fcommand\20AnyFoldActivate\fpattern\6*\rFileType\24nvim_create_autocmd\bapi\bvim\0" },
+    config = { "\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fpattern\6*\fcommand\20AnyFoldActivate\rFileType\24nvim_create_autocmd\bapi\bvim\0" },
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-anyfold",
     url = "https://github.com/pseewald/vim-anyfold"
@@ -355,7 +355,7 @@ _G.packer_plugins = {
 time([[Defining packer_plugins]], false)
 -- Config for: vim-anyfold
 time([[Config for vim-anyfold]], true)
-try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fcommand\20AnyFoldActivate\fpattern\6*\rFileType\24nvim_create_autocmd\bapi\bvim\0", "config", "vim-anyfold")
+try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fpattern\6*\fcommand\20AnyFoldActivate\rFileType\24nvim_create_autocmd\bapi\bvim\0", "config", "vim-anyfold")
 time([[Config for vim-anyfold]], false)
 
 _G._packer.inside_compile = false

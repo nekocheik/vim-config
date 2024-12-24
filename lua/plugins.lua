@@ -1,14 +1,4 @@
 vim.cmd [[packadd packer.nvim]]
-
-local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-  vim.cmd [[packadd packer.nvim]]
-end
-
-
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use {
@@ -79,7 +69,14 @@ return require('packer').startup(function(use)
   use 'MunifTanjim/nui.nvim'
   use 'echasnovski/mini.icons'
   use 'HakonHarnes/img-clip.nvim'
-  use 'zbirenbaum/copilot.lua'
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({})
+    end,
+  }
   use 'ibhagwan/fzf-lua'
   use "sindrets/diffview.nvim" 
 
@@ -88,5 +85,3 @@ return require('packer').startup(function(use)
     require('packer').sync()
   end
 end)
-
-

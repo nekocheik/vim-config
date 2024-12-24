@@ -50,4 +50,4 @@ function! ShowDetailedTypeInfo()
 endfunction
 ]]
 
-map('n', '<leader>K', ':lua SearchWithFzfFromClipboard()<CR>')
+vim.keymap.set('n', '<leader>K', ':lua SearchWithFzfFromClipboard()<CR>', { silent = true })
