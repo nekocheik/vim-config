@@ -1,0 +1,11 @@
+services:
+  nvim:
+    build: .
+    platform: linux/arm64  # Pour Mac M1/M2
+    container_name: nvim-ide
+    volumes:
+      - ./workspace:/root/workspace
+      - ./.config/nvim:/root/.config/nvim
+    stdin_open: true
+    tty: true
+    command: tail -f /dev/null

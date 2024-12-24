@@ -1,4 +1,3 @@
-
 local opt = vim.opt
 vim.opt.laststatus = 3
 opt.foldmethod = 'expr'
@@ -27,11 +26,23 @@ opt.encoding = 'UTF-8'
 opt.clipboard = 'unnamed,unnamedplus'
 opt.tabstop = 2
 opt.smarttab = true
+-- vim.o.backup = false
+-- vim.o.writebackup = false
+-- vim.o.swapfile = false
 
 vim.g.mapleader = ' '
 vim.cmd('syntax on')
-vim.cmd('colorscheme catppuccin-macchiato')
-vim.g.airline_theme = 'catppuccin'
+
+-- -- Configuration du thème après son chargement
+-- vim.api.nvim_create_autocmd("User", {
+--   pattern = "LazyLoad",
+--   callback = function(ev)
+--     if ev.data == "catppuccin" then
+--       vim.cmd('colorscheme catppuccin-macchiato')
+--       vim.g.airline_theme = 'catppuccin'
+--     end
+--   end,
+-- })
 
 -- Ignorer les fichiers cachés et dossiers spécifiques dans FZF
 vim.env.FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!**/{node_modules,vendor,.git,__pycache__,build,dist,target,elm-stuff,.idea,.vscode,deps,.venv,Cargo.lock,Cargo.toml,.*}"'

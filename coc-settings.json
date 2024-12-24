@@ -37,7 +37,6 @@
     "typescriptreact",
     "json",
     "javascriptreact",
-    "typescript.tsx",
     "graphql"
   ],
   "explorer.width": 30,
@@ -92,5 +91,13 @@
     "inlayHints.includeInlayFunctionLikeReturnTypeHints": true,
     "preferences.includePackageJsonAutoImports": "auto",
     "suggest.completeFunctionCalls": true
-  }
+  },
+  "copilot.enable": true,
+  "copilot.timeout": 5000,
+  "copilot.priority": 1000,
+  "copilot.limit": 10,
+  "copilot.enablePreselect": true,
+  "copilot.kindLabel": " ",
+  "copilot.shortcut": "Cop",
+  "copilot.showRemainingText": true
 }

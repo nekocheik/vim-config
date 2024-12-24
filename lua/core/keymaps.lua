@@ -63,7 +63,7 @@ vim.api.nvim_set_keymap('n', 'U', '<C-r>', { noremap = true, silent = true })
 map('n', '<leader>tw', ':!python3  ~/Project/Projet/transcrib.py &<CR>')
 
 
--- Remap Alt+K and Alt+J to expand and shrink region using vim-expand-region plugin
 vim.api.nvim_set_keymap('n', '<A-k>', '<Plug>(expand_region_expand)', { noremap = false, silent = true })
 vim.api.nvim_set_keymap('n', '<A-j>', '<Plug>(expand_region_shrink)', { noremap = false, silent = true })
 
+-- vim.api.nvim_set_keymap('n', '<leader>p', ':CocCommand prettier.formatFile<CR>', { noremap = true, silent = true })
