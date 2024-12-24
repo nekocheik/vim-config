@@ -69,14 +69,36 @@ return require('packer').startup(function(use)
   use 'MunifTanjim/nui.nvim'
   use 'echasnovski/mini.icons'
   use 'HakonHarnes/img-clip.nvim'
-  use {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({})
-    end,
-  }
+  -- use {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup({
+  --       suggestion = {
+  --         enabled = true,
+  --         auto_trigger = true,
+  --         keymap = {
+  --           accept = "<M-l>",
+  --           next = "<M-]>",
+  --           prev = "<M-[>",
+  --           dismiss = "<C-]>",
+  --         },
+  --       },
+  --       panel = {
+  --         enabled = true,
+  --         auto_refresh = false,
+  --         keymap = {
+  --           jump_prev = "[[",
+  --           jump_next = "]]",
+  --           accept = "<CR>",
+  --           refresh = "gr",
+  --           open = "<M-CR>"
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- }
   use 'ibhagwan/fzf-lua'
   use "sindrets/diffview.nvim" 
 
