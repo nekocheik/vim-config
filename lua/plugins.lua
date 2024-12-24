@@ -1,10 +1,3 @@
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup END
-]])
-
 vim.cmd [[packadd packer.nvim]]
 
 local fn = vim.fn
@@ -18,7 +11,6 @@ end
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
-
   use {
     'nvim-pack/nvim-spectre',
     requires = {'nvim-lua/plenary.nvim', 'kyazdani42/nvim-web-devicons'}
@@ -85,10 +77,6 @@ return require('packer').startup(function(use)
   use 'zbirenbaum/copilot.lua'
   use 'ibhagwan/fzf-lua'
   use "sindrets/diffview.nvim" 
-
-
-
-
 
   vim.g.matchup_matchparen_offscreen = { method = "popup" }
   if packer_bootstrap then
