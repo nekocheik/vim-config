@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/share/lua/5.1/?.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/share/lua/5.1/?/init.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/lib/luarocks/rocks-5.1/?.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1725453128/lib/lua/5.1/?.so"
+local package_path_str = "/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1731601260/share/lua/5.1/?.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1731601260/share/lua/5.1/?/init.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1731601260/lib/luarocks/rocks-5.1/?.lua;/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1731601260/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/Users/cheikkone49/.cache/nvim/packer_hererocks/2.1.1731601260/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -104,6 +104,11 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/copilot.lua",
     url = "https://github.com/zbirenbaum/copilot.lua"
   },
+  ["diffview.nvim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/diffview.nvim",
+    url = "https://github.com/sindrets/diffview.nvim"
+  },
   ["dressing.nvim"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/dressing.nvim",
@@ -154,6 +159,11 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nui.nvim",
     url = "https://github.com/MunifTanjim/nui.nvim"
   },
+  ["nvim-colorizer.lua"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
+    url = "https://github.com/NvChad/nvim-colorizer.lua"
+  },
   ["nvim-cursorword"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-cursorword",
@@ -184,11 +194,6 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
-  ["nvim-ts-autotag"] = {
-    loaded = true,
-    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-ts-autotag",
-    url = "https://github.com/windwp/nvim-ts-autotag"
-  },
   ["nvim-web-devicons"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
@@ -214,6 +219,11 @@ _G.packer_plugins = {
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/simpylfold",
     url = "https://github.com/tmhedberg/simpylfold"
   },
+  ["tagalong.vim"] = {
+    loaded = true,
+    path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/tagalong.vim",
+    url = "https://github.com/AndrewRadev/tagalong.vim"
+  },
   ["tokyonight.nvim"] = {
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
@@ -230,6 +240,7 @@ _G.packer_plugins = {
     url = "https://github.com/vim-airline/vim-airline-themes"
   },
   ["vim-anyfold"] = {
+    config = { "\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fcommand\20AnyFoldActivate\fpattern\6*\rFileType\24nvim_create_autocmd\bapi\bvim\0" },
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-anyfold",
     url = "https://github.com/pseewald/vim-anyfold"
@@ -342,6 +353,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: vim-anyfold
+time([[Config for vim-anyfold]], true)
+try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fcommand\20AnyFoldActivate\fpattern\6*\rFileType\24nvim_create_autocmd\bapi\bvim\0", "config", "vim-anyfold")
+time([[Config for vim-anyfold]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

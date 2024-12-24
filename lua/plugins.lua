@@ -68,7 +68,15 @@ return require('packer').startup(function(use)
   use 'tmhedberg/simpylfold'
   use 'mhinz/vim-signify'
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-  use 'pseewald/vim-anyfold'
+  use {
+    'pseewald/vim-anyfold',
+    config = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "*",
+        command = "AnyFoldActivate"
+      })
+    end
+  }
   use 'onsails/lspkind-nvim'
   use 'stevearc/dressing.nvim'
   use 'MunifTanjim/nui.nvim'

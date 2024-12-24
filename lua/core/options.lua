@@ -33,7 +33,16 @@ vim.o.swapfile = false
 vim.g.mapleader = ' '
 vim.cmd('syntax on')
 
--- Configuration du thème après son chargement
+-- Configuration correcte de l'autocmd pour PackerCompile
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "init.lua",
+  callback = function()
+    vim.cmd("source <afile>")
+    vim.cmd("PackerCompile")
+  end,
+})
+
+-- Simplification de la configuration du thème
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "catppuccin",
   callback = function()
