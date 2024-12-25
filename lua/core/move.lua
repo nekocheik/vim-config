@@ -8,40 +8,82 @@ local inactivity_timeout = 1000 -- millisecondes
 -- Fonction pour déplacer les lignes
 function M.move_line(direction)
     local mode = vim.fn.mode()
-    local current_line = vim.fn.line('.')
-    local last_line = vim.fn.line('$')
-
-    -- En mode normal
-    if mode == 'n' then
-        if direction == 'down' and current_line < last_line then
-            vim.cmd('move +1')
-        elseif direction == 'up' and current_line > 1 then
-            vim.cmd('move -2')
-        end
-    -- En mode visuel
-    elseif mode == 'v' or mode == 'V' then
-        local start_line = vim.fn.line("'<")
-        local end_line = vim.fn.line("'>")
-
-        if direction == 'down' and end_line < last_line then
-            vim.cmd("'<,'>move '>+1")
-            vim.cmd('normal! gv')
-        elseif direction == 'up' and start_line > 1 then
-            vim.cmd("'<,'>move '<-2")
-            vim.cmd('normal! gv')
-        end
-    end
-
-    -- Réinitialiser le timer d'inactivité
-    if inactivity_timer then
-        inactivity_timer:stop()
-        inactivity_timer:close()
-    end
     
-    inactivity_timer = vim.loop.new_timer()
-    inactivity_timer:start(inactivity_timeout, 0, vim.schedule_wrap(function()
-        M.stop_move()
-    end))
+    -- Vérifier si le buffer est modifiable
+    if not vim.bo.modifiable then
+        return
+    end
+
+    -- Déterminer les lignes de début et de fin
+    local first_line, last_line
+    if mode == 'n' then
+        first_line = vim.fn.line('.')
+        last_line = first_line
+    else
+        first_line = vim.fn.line("'<")
+        last_line = vim.fn.line("'>")
+    end
+
+    -- Sauvegarder la position actuelle
+    local old_pos = vim.fn.getcurpos()
+    
+    -- Calculer la ligne de destination
+    local after_line
+    if direction == 'up' then
+        vim.fn.cursor(first_line, 1)
+        vim.cmd('normal! k')
+        after_line = vim.fn.line('.') - 1
+    else
+        vim.fn.cursor(last_line, 1)
+        vim.cmd('normal! j')
+        local fold_end = vim.fn.foldclosedend('.')
+        after_line = fold_end == -1 and vim.fn.line('.') or fold_end
+    end
+
+    -- Restaurer la position du curseur
+    vim.fn.setpos('.', old_pos)
+
+    -- Déplacer les lignes
+    vim.cmd(string.format('%d,%dmove %d', first_line, last_line, after_line))
+
+    -- Gérer l'indentation automatique
+    if vim.g.move_auto_indent then
+        local new_first = vim.fn.line("'[")
+        local new_last = vim.fn.line("']")
+
+        -- Indenter la première ligne et obtenir le niveau d'indentation
+        vim.fn.cursor(new_first, 1)
+        local old_indent = vim.fn.indent('.')
+        vim.cmd('normal! ==')
+        local new_indent = vim.fn.indent('.')
+
+        -- Ajuster l'indentation des lignes suivantes si nécessaire
+        if new_first < new_last and old_indent ~= new_indent then
+            local old_sw = vim.bo.shiftwidth
+            vim.bo.shiftwidth = 1
+            
+            local indent_cmd
+            if old_indent < new_indent then
+                indent_cmd = string.rep('>', new_indent - old_indent)
+            else
+                indent_cmd = string.rep('<', old_indent - new_indent)
+            end
+            
+            vim.cmd(string.format('%d,%d%s', new_first + 1, new_last, indent_cmd))
+            vim.bo.shiftwidth = old_sw
+        end
+
+        -- Mettre à jour les marques
+        vim.fn.cursor(new_first, 1)
+        vim.cmd('normal! 0m[')
+        vim.fn.cursor(new_last, 1)
+        vim.cmd('normal! $m]')
+    end
+
+    -- Restaurer la sélection visuelle si nécessaire
+    if mode == 'v' or mode == 'V' then
+        vim.cmd('normal! gv')
+    end
 end
 
 -- Fonction pour activer le mode de déplacement
@@ -77,6 +119,9 @@ end
 
 -- Configuration des mappings
 function M.setup()
+    -- Ajouter cette ligne au début de setup()
+    vim.g.move_auto_indent = true
+    
     -- Mappings pour le début du mouvement
     vim.keymap.set({'n', 'v'}, '`j', function()
         M.activate_move_mode('down')
