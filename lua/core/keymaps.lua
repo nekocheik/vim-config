@@ -1,3 +1,8 @@
+-- Définir la touche leader comme espace
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+
 local function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
     if opts then
@@ -5,6 +10,7 @@ local function map(mode, lhs, rhs, opts)
     end
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
+
 
 -- General mappings
 map('n', '<Leader>m', ':source $MYVIMRC<CR>')
@@ -31,8 +37,7 @@ map('n', '<leader>rn', '<Plug>(coc-rename)')
 map('n', 'gf', ':lua CreateFileIfNotExist()<CR>')
 map('n', 'K', ':lua HandleK()<CR>')
 
-map('n', '<leader>K', ':lua SearchWithFzfFromClipboard()<CR>')
-map('n', '<leaderk>k', ':lua SearchWithFzfFromClipboard()<CR>')
+map('n', '<leader>k', ':lua SearchWithFzfFromClipboard()<CR>')
 
 map('n', '<leader>aa', ':AvanteToggle<CR>')
 map('n', '<leader>ar', ':AvanteRefresh<CR>')
@@ -45,16 +50,16 @@ map('', '˙', '<A-h>')
 map('', '˚', '<A-k>')
 map('', '¬', '<A-l>')
 
-vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
+vim.keymap.set('n', '<leader>S', ':lua require("spectre").toggle()<CR>', {
   desc = "Toggle Spectre"
 })
-vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+vim.keymap.set('n', '<leader>sw', ':lua require("spectre").open_visual({select_word=true})<CR>', {
   desc = "Search current word"
 })
-vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', {
+vim.keymap.set('v', '<leader>sw', '<esc>:lua require("spectre").open_visual()<CR>', {
   desc = "Search current word"
 })
-vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+vim.keymap.set('n', '<leader>sp', ':lua require("spectre").open_file_search({select_word=true})<CR>', {
   desc = "Search on current file"
 })
 

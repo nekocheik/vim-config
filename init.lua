@@ -1,9 +1,8 @@
-vim.cmd [[packadd packer.nvim]]
 
 
+require('core.keymaps')      -- Puis les mappings de touches
 require('plugins')           -- Chargement principal des plugins
 -- -- Configuration de base
-require('core.keymaps')      -- Puis les mappings de touches
 require('core.underlineworld')
 
 -- Plugins et leurs configurations
