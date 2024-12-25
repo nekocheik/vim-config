@@ -2,7 +2,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Configuration de vim-move
 
+-- Fonction de mapping
 local function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
     if opts then
@@ -10,7 +12,6 @@ local function map(mode, lhs, rhs, opts)
     end
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
-
 
 -- General mappings
 map('n', '<Leader>m', ':source $MYVIMRC<CR>')
@@ -45,11 +46,6 @@ map('n', '<leader>ae', ':AvanteEdit<CR>')
 map('n', '<C-p>', ':lua vim.cmd("cd " .. ProjectRoot() .. " | Files")<CR>')
 map('n', '<leader>f', ':Files<CR>')
 
-map('', '∆', '<A-j>')
-map('', '˙', '<A-h>')
-map('', '˚', '<A-k>')
-map('', '¬', '<A-l>')
-
 vim.keymap.set('n', '<leader>S', ':lua require("spectre").toggle()<CR>', {
   desc = "Toggle Spectre"
 })
@@ -70,5 +66,3 @@ map('n', '<leader>tw', ':!python3  ~/Project/Projet/transcrib.py &<CR>')
 
 vim.api.nvim_set_keymap('n', '<A-k>', '<Plug>(expand_region_expand)', { noremap = false, silent = true })
 vim.api.nvim_set_keymap('n', '<A-j>', '<Plug>(expand_region_shrink)', { noremap = false, silent = true })
-
--- vim.api.nvim_set_keymap('n', '<leader>p', ':CocCommand prettier.formatFile<CR>', { noremap = true, silent = true })
