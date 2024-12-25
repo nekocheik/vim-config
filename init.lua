@@ -1,18 +1,17 @@
+require('core.keymaps')      
+require('plugins')           
 
-
-require('core.keymaps')      -- Puis les mappings de touches
-require('plugins')           -- Chargement principal des plugins
--- -- Configuration de base
+-- Configuration de base
+require('core.options')      -- Déplacer options avant underlineworld
 require('core.underlineworld')
 
 -- Plugins et leurs configurations
-require('core.options')      -- Options de base de Neovim d'abord
 require('plugins.configs.cmp')
 require('plugins.configs.spectre')
 require('plugins.configs.accelerated')
 require('plugins.configs.scrollbar')
-require('plugins.configs.sessions') 
-require('plugins.configs.coc') 
+require('plugins.configs.sessions')
+require('plugins.configs.coc')
 require('utils.functions')
 
-require('core.autocmds')     -- Ensuite les autocommandes
+require('core.autocmds')

@@ -64,6 +64,14 @@ return require('packer').startup(function(use)
       })
     end
   }
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("plugins.configs.copilot").setup()
+    end,
+  }
   use 'onsails/lspkind-nvim'
   use 'stevearc/dressing.nvim'
   use 'MunifTanjim/nui.nvim'
