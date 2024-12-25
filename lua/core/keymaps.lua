@@ -66,3 +66,6 @@ map('n', '<leader>tw', ':!python3  ~/Project/Projet/transcrib.py &<CR>')
 
 vim.api.nvim_set_keymap('n', '<A-k>', '<Plug>(expand_region_expand)', { noremap = false, silent = true })
 vim.api.nvim_set_keymap('n', '<A-j>', '<Plug>(expand_region_shrink)', { noremap = false, silent = true })
+
+vim.keymap.set('n', '<leader>tm', require('core.custom_mode').toggle_custom_mode, 
+    { desc = 'Toggle mode personnalisé' })
