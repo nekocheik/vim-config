@@ -1,5 +1,19 @@
-require('core.keymaps')      
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
 require('plugins')           
+
+require('core.keymaps')      
 
 
 -- Configuration de base
@@ -25,6 +39,8 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
         vim.keymap.set('n', '<C-l>', function() log_keypress('Ctrl-l') end, {silent = true})
     end
 })
+
+vim.g.move_key_modifier = 'D'  -- Pour Command
 
 -- Plugins et leurs configurations
 require('plugins.configs.cmp')

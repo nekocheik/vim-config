@@ -249,7 +249,7 @@ _G.packer_plugins = {
     url = "https://github.com/vim-airline/vim-airline-themes"
   },
   ["vim-anyfold"] = {
-    config = { "\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fcommand\20AnyFoldActivate\fpattern\6*\rFileType\24nvim_create_autocmd\bapi\bvim\0" },
+    config = { "\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fpattern\6*\fcommand\20AnyFoldActivate\rFileType\24nvim_create_autocmd\bapi\bvim\0" },
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-anyfold",
     url = "https://github.com/pseewald/vim-anyfold"
@@ -305,6 +305,7 @@ _G.packer_plugins = {
     url = "https://github.com/andymass/vim-matchup"
   },
   ["vim-move"] = {
+    config = { "\27LJ\2\n�\3\0\0\5\0\20\0A6\0\0\0009\0\1\0)\1\0\0=\1\2\0006\0\0\0009\0\1\0)\1\1\0=\1\3\0006\0\0\0009\0\4\0009\0\5\0'\2\6\0'\3\a\0'\4\b\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\6\0'\3\t\0'\4\n\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\v\0'\3\a\0'\4\f\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\v\0'\3\t\0'\4\r\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\6\0'\3\14\0'\4\15\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\6\0'\3\16\0'\4\17\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\v\0'\3\14\0'\4\18\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\v\0'\3\16\0'\4\19\0B\0\4\1K\0\1\0\25<Plug>MoveBlockRight\24<Plug>MoveBlockLeft\24<Plug>MoveCharRight\a¬\23<Plug>MoveCharLeft\a˙\22<Plug>MoveBlockUp\24<Plug>MoveBlockDown\6v\21<Plug>MoveLineUp\a˚\23<Plug>MoveLineDown\b∆\6n\bset\vkeymap\23move_normal_option\18move_map_keys\6g\bvim\0" },
     loaded = true,
     path = "/Users/cheikkone49/.local/share/nvim/site/pack/packer/start/vim-move",
     url = "https://github.com/matze/vim-move"
@@ -367,9 +368,13 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: vim-move
+time([[Config for vim-move]], true)
+try_loadstring("\27LJ\2\n�\3\0\0\5\0\20\0A6\0\0\0009\0\1\0)\1\0\0=\1\2\0006\0\0\0009\0\1\0)\1\1\0=\1\3\0006\0\0\0009\0\4\0009\0\5\0'\2\6\0'\3\a\0'\4\b\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\6\0'\3\t\0'\4\n\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\v\0'\3\a\0'\4\f\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\v\0'\3\t\0'\4\r\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\6\0'\3\14\0'\4\15\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\6\0'\3\16\0'\4\17\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\v\0'\3\14\0'\4\18\0B\0\4\0016\0\0\0009\0\4\0009\0\5\0'\2\v\0'\3\16\0'\4\19\0B\0\4\1K\0\1\0\25<Plug>MoveBlockRight\24<Plug>MoveBlockLeft\24<Plug>MoveCharRight\a¬\23<Plug>MoveCharLeft\a˙\22<Plug>MoveBlockUp\24<Plug>MoveBlockDown\6v\21<Plug>MoveLineUp\a˚\23<Plug>MoveLineDown\b∆\6n\bset\vkeymap\23move_normal_option\18move_map_keys\6g\bvim\0", "config", "vim-move")
+time([[Config for vim-move]], false)
 -- Config for: vim-anyfold
 time([[Config for vim-anyfold]], true)
-try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fcommand\20AnyFoldActivate\fpattern\6*\rFileType\24nvim_create_autocmd\bapi\bvim\0", "config", "vim-anyfold")
+try_loadstring("\27LJ\2\nm\0\0\4\0\5\0\a6\0\0\0009\0\1\0009\0\2\0'\2\3\0005\3\4\0B\0\3\1K\0\1\0\1\0\2\fpattern\6*\fcommand\20AnyFoldActivate\rFileType\24nvim_create_autocmd\bapi\bvim\0", "config", "vim-anyfold")
 time([[Config for vim-anyfold]], false)
 
 -- Command lazy-loads
