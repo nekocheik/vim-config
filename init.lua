@@ -1,9 +1,80 @@
+-- Charger les plugins de base d'abord
 require('plugins')           
 require('core.keymaps')      
-require('core.options')      -- Déplacer options avant underlineworld
+require('core.options')      
+
+-- Charger la bibliothèque avante avant la configuration
+require('avante_lib').load()
+
+-- Configuration initiale de Copilot
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.g.copilot_tab_fallback = ""
+
+-- S'assurer que Copilot est configuré avant avante
+require('copilot').setup({
+    panel = {
+        enabled = true,
+        auto_refresh = true,
+    },
+    suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        keymap = {
+            accept = "<M-l>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+        },
+    },
+    filetypes = {
+        yaml = true,
+        markdown = true,
+        help = false,
+        gitcommit = false,
+        gitrebase = false,
+        ["."] = false,
+    },
+})
+
+-- Attendre un peu plus longtemps avant de configurer avante
+vim.defer_fn(function()
+    require('avante').setup({
+        provider = "copilot",
+        auto_suggestions_provider = "copilot",
+        behaviour = {
+            auto_suggestions = true,
+            auto_set_highlight_group = true,
+            auto_set_keymaps = true,
+            auto_apply_diff_after_generation = false,
+            minimize_diff = true,
+        },
+        windows = {
+            position = "right",
+            width = 30,
+            sidebar_header = {
+                enabled = true,
+                align = "center",
+                rounded = true,
+            },
+        },
+        mappings = {
+            suggestion = {
+                accept = "<M-l>",
+                next = "<M-]>",
+                prev = "<M-[>",
+                dismiss = "<C-]>",
+            },
+        }
+    })
+end, 3000)  -- Augmenté à 3 secondes
+
+-- Charger le reste des configurations
 require('core.underlineworld')
 require('plugins.configs.move')
 require('plugins.configs.persisted')
+
+
 
 -- Ajouter un keymap de test pour les contrôles
 vim.api.nvim_create_autocmd({"VimEnter"}, {
@@ -48,4 +119,63 @@ require('core.custom_mode')
 vim.g.maximizer_set_default_mapping = 0  -- Désactive le mapping par défaut (F3)
 vim.g.maximizer_set_mapping_with_bang = 1  -- Utilise la version avec bang par défaut
 
+-- Configuration de GitHub Copilot en premier
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.g.copilot_tab_fallback = ""
 
+-- Configuration de copilot.lua
+require('copilot').setup({
+    panel = {
+        enabled = true,
+        auto_refresh = true,
+    },
+    suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        keymap = {
+            accept = "<M-l>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+        },
+    },
+    filetypes = {
+        yaml = true,
+        markdown = true,
+        help = false,
+        gitcommit = false,
+        gitrebase = false,
+        ["."] = false,
+    },
+})
+
+-- Configuration d'avante.nvim avec Copilot
+require('avante').setup({
+    provider = "copilot",
+    auto_suggestions_provider = "copilot",
+    behaviour = {
+        auto_suggestions = true,
+        auto_set_highlight_group = true,
+        auto_set_keymaps = true,
+        auto_apply_diff_after_generation = false,
+        minimize_diff = true,
+    },
+    windows = {
+        position = "right",
+        width = 30,
+        sidebar_header = {
+            enabled = true,
+            align = "center",
+            rounded = true,
+        },
+    },
+    mappings = {
+        suggestion = {
+            accept = "<M-l>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+        },
+    }
+})

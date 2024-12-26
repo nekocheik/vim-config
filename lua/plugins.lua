@@ -64,6 +64,18 @@ Plug('matze/vim-move')
 Plug('szw/vim-maximizer')
 Plug('olimorris/persisted.nvim')
 
+-- Dépendances pour avante.nvim
+Plug('stevearc/dressing.nvim')
+Plug('nvim-lua/plenary.nvim')
+Plug('MunifTanjim/nui.nvim')
+Plug('hrsh7th/nvim-cmp')
+Plug('nvim-tree/nvim-web-devicons')
+Plug('HakonHarnes/img-clip.nvim')
+Plug('zbirenbaum/copilot.lua')
+Plug('MeanderingProgrammer/render-markdown.nvim')
+
+-- Le plugin avante.nvim lui-même
+Plug('yetone/avante.nvim', { ['branch'] = 'main', ['do'] = 'make' })
 
 vim.call('plug#end')
 
