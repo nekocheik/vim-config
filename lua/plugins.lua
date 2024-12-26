@@ -1,146 +1,85 @@
-vim.cmd [[packadd packer.nvim]]
-return require('packer').startup(function(use)
-    use 'wbthomason/packer.nvim'
-    use {
-        'nvim-pack/nvim-spectre',
-        requires = {'nvim-lua/plenary.nvim', 'kyazdani42/nvim-web-devicons'}
-    }
-    use {
-        'junegunn/fzf',
-        run = './install --bin'
-    }
-    use {'junegunn/fzf.vim'}
+local vim = vim
+local Plug = vim.fn['plug#']
 
-    use 'folke/which-key.nvim'
-    use 'roxma/vim-tmux-clipboard'
-    use "NvChad/nvim-colorizer.lua"
-    use 'anhpt379/nvim-cursorword'
-    use {
-        'neoclide/coc.nvim',
-        branch = 'master',
-        run = 'npm ci'
-    }
-    use 'folke/tokyonight.nvim'
-    use 'tmux-plugins/vim-tmux-focus-events'
-    use 'AndrewRadev/tagalong.vim'
-    -- use 'windwp/nvim-ts-autotag'
-    use 'azabiong/vim-highlighter'
-    use 'terryma/vim-expand-region'
-    use 'tpope/vim-obsession'
-    -- use 'dominickng/fzf-session.vim'
-    use {'andymass/vim-matchup'}
-    use 'alvan/vim-closetag'
-    use 'jiangmiao/auto-pairs'
-    use 'christoomey/vim-tmux-navigator'
-    use 'preservim/nerdcommenter'
-    use 'tpope/vim-surround'
-    use 'thaerkh/vim-indentguides'
-    use 'lucasprag/simpleblack'
-    use 'prabirshrestha/vim-lsp'
-    use 'mattn/vim-lsp-settings'
-    use 'petertriho/nvim-scrollbar'
-    use 'nathanaelkane/vim-indent-guides'
-    use 'christoomey/vim-system-copy'
-    use 'vim-airline/vim-airline'
-    use 'vim-airline/vim-airline-themes'
-    use 'ryanoasis/vim-devicons'
-    use 'kyazdani42/nvim-web-devicons'
-    use 'romgrk/barbar.nvim'
-    use 'mhinz/vim-startify'
-    use {
-        'catppuccin/nvim',
-        as = 'catppuccin'
-    }
-    use {
-        'mg979/vim-visual-multi',
-        branch = 'master'
-    }
-    use 'tpope/vim-fugitive'
-    use 'junegunn/gv.vim'
-    use 'neoclide/coc-tabnine'
-    use 'antosha417/nvim-lsp-file-operations'
-    use 'nvim-lua/plenary.nvim'
+vim.call('plug#begin')
 
-    use {
-        'matze/vim-move',
-        config = function()
-            -- Désactiver les mappings par défaut
-            vim.g.move_map_keys = 0
+-- Gestionnaires de plugins et utilitaires de base
+Plug('nvim-pack/nvim-spectre', { 
+    requires = {'nvim-lua/plenary.nvim', 'kyazdani42/nvim-web-devicons'}
+})
+Plug('junegunn/fzf', { ['do'] = './install --bin' })
+Plug('junegunn/fzf.vim')
+Plug('folke/which-key.nvim')
+Plug('roxma/vim-tmux-clipboard')
+Plug('NvChad/nvim-colorizer.lua')
+Plug('anhpt379/nvim-cursorword')
+Plug('neoclide/coc.nvim', { ['branch'] = 'master', ['do'] = 'npm ci' })
+Plug('folke/tokyonight.nvim')
+Plug('tmux-plugins/vim-tmux-focus-events')
+Plug('AndrewRadev/tagalong.vim')
+Plug('azabiong/vim-highlighter')
+Plug('terryma/vim-expand-region')
+Plug('tpope/vim-obsession')
+Plug('andymass/vim-matchup')
+Plug('alvan/vim-closetag')
+Plug('jiangmiao/auto-pairs')
+Plug('christoomey/vim-tmux-navigator')
+Plug('preservim/nerdcommenter')
+Plug('tpope/vim-surround')
+Plug('thaerkh/vim-indentguides')
+Plug('lucasprag/simpleblack')
+Plug('prabirshrestha/vim-lsp')
+Plug('mattn/vim-lsp-settings')
+Plug('petertriho/nvim-scrollbar')
+Plug('nathanaelkane/vim-indent-guides')
+Plug('christoomey/vim-system-copy')
+Plug('vim-airline/vim-airline')
+Plug('vim-airline/vim-airline-themes')
+Plug('ryanoasis/vim-devicons')
+Plug('kyazdani42/nvim-web-devicons')
+Plug('romgrk/barbar.nvim')
+Plug('mhinz/vim-startify')
+Plug('catppuccin/nvim', { ['as'] = 'catppuccin' })
+Plug('mg979/vim-visual-multi', { ['branch'] = 'master' })
+Plug('tpope/vim-fugitive')
+Plug('junegunn/gv.vim')
+Plug('neoclide/coc-tabnine')
+Plug('antosha417/nvim-lsp-file-operations')
+Plug('nvim-lua/plenary.nvim')
+Plug('nvim-tree/nvim-tree.lua')
+Plug('tmhedberg/simpylfold')
+Plug('mhinz/vim-signify')
+Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
+Plug('pseewald/vim-anyfold')
+Plug('zbirenbaum/copilot.lua')
+Plug('onsails/lspkind-nvim')
+Plug('stevearc/dressing.nvim')
+Plug('MunifTanjim/nui.nvim')
+Plug('echasnovski/mini.icons')
+Plug('HakonHarnes/img-clip.nvim')
+Plug('github/copilot.vim')
+Plug('ibhagwan/fzf-lua')
+Plug('sindrets/diffview.nvim')
+Plug('matze/vim-move')
 
-            -- Activer l'option spéciale pour macOS
-            vim.g.move_normal_option = 1
 
-            -- Mapper les touches spéciales macOS
-            -- ∆ = Alt-j
-            -- ˚ = Alt-k
-            -- ˙ = Alt-h
-            -- ¬ = Alt-l
-            vim.keymap.set('n', '∆', '<Plug>MoveLineDown')
-            vim.keymap.set('n', '˚', '<Plug>MoveLineUp')
-            vim.keymap.set('v', '∆', '<Plug>MoveBlockDown')
-            vim.keymap.set('v', '˚', '<Plug>MoveBlockUp')
+vim.call('plug#end')
 
-            -- Pour le déplacement horizontal
-            vim.keymap.set('n', '˙', '<Plug>MoveCharLeft')
-            vim.keymap.set('n', '¬', '<Plug>MoveCharRight')
-            vim.keymap.set('v', '˙', '<Plug>MoveBlockLeft')
-            vim.keymap.set('v', '¬', '<Plug>MoveBlockRight')
-        end
-    }
-    use 'nvim-tree/nvim-tree.lua'
-    use 'tmhedberg/simpylfold'
-    use 'mhinz/vim-signify'
-    use {
-        'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate'
-    }
-    use {
-        'pseewald/vim-anyfold',
-        config = function()
-            -- Attendre que Neovim soit complètement chargé
-            vim.api.nvim_create_autocmd("VimEnter", {
-                callback = function()
-                    vim.cmd('filetype plugin indent on')
-                    vim.cmd('syntax on')
-                    
-                    -- Configurer AnyFold avec un petit délai
-                    vim.defer_fn(function()
-                        vim.api.nvim_create_autocmd("FileType", {
-                            pattern = "*",
-                            callback = function()
-                                if vim.fn.exists(':AnyFoldActivate') == 2 then
-                                    vim.cmd('AnyFoldActivate')
-                                end
-                            end
-                        })
-                    end, 100) -- délai de 100ms
-                end,
-                once = true
-            })
-        end
-    }
-    use {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        event = "InsertEnter",
-        config = function()
-            require("plugins.configs.copilot").setup()
-        end
-    }
-    use 'onsails/lspkind-nvim'
-    use 'stevearc/dressing.nvim'
-    use 'MunifTanjim/nui.nvim'
-    use 'echasnovski/mini.icons'
-    use 'HakonHarnes/img-clip.nvim'
-    use 'github/copilot.vim'
-    use 'ibhagwan/fzf-lua'
-    use "sindrets/diffview.nvim"
+-- Après plug#end, ajoutez cette configuration pour airline
+vim.g.airline_extensions = {
+    'branch',
+    'hunks',
+    'coc',
+    'tabline',
+    'fzf',
+    'netrw',
+    'quickfix',
+    'wordcount',
+    'term'
+}
 
-    vim.g.matchup_matchparen_offscreen = {
-        method = "popup"
-    }
-    if packer_bootstrap then
-        require('packer').sync()
-    end
-end)
+-- Désactiver le chargement automatique des extensions
+vim.g.airline_skip_empty_sections = 1
 
+-- Configuration pour matchup
+vim.g.matchup_matchparen_offscreen = { method = 'popup' }

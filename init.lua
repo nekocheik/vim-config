@@ -13,10 +13,9 @@ local packer_bootstrap = ensure_packer()
 
 require('plugins')           
 
-require('core.keymaps')      
-
 
 -- Configuration de base
+require('core.keymaps')      
 require('core.options')      -- Déplacer options avant underlineworld
 require('core.underlineworld')
 
@@ -40,7 +39,9 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
     end
 })
 
-vim.g.move_key_modifier = 'D'  -- Pour Command
+
+-- vim.g.move_key_modifier = 'D'  -- Pour Command
+
 
 -- Plugins et leurs configurations
 require('plugins.configs.cmp')
@@ -53,3 +54,5 @@ require('utils.functions')
 require('core.autocmds')
 require('core.custom_mode')
 -- require('plugins.move')
+
+

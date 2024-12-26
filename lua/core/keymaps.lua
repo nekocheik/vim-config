@@ -2,8 +2,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Configuration de vim-move
-
 -- Fonction de mapping
 local function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
