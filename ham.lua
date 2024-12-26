@@ -19,6 +19,19 @@ local previousMode = false
 -- Ajouter au début du fichier
 local hotkeys = {}
 
+-- Ajouter au début du fichier, après les requires
+local systemKeysBlocker = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+    local flags = event:getFlags()
+    local keycode = event:getKeyCode()
+    
+    -- Bloquer Cmd + H (keycode 4 est la touche H)
+    if flags.cmd and keycode == 4 then
+        return true -- Retourne true pour bloquer l'événement
+    end
+    return false
+end)
+systemKeysBlocker:start()
+
 -- Fonctions pour changer de fenêtre active
 local function focusWindowLeft()
     local win = hs.window.focusedWindow()
@@ -336,16 +349,16 @@ end
 -- Table de mapping pour les raccourcis natifs
 local nativeKeyMap = {
     -- Navigation avec les caractères spéciaux pour vim-move
-    ["right_option+h"] = { key = "˙" }, -- Option + h -> ˙
-    ["right_option+j"] = { key = "∆" }, -- Option + j -> ∆
-    ["right_option+k"] = { key = "˚" }, -- Option + k -> ˚
-    ["right_option+l"] = { key = "¬" }, -- Option + l -> ¬
+    ["right_option+h"] = { key = "˙" },
+    ["right_option+j"] = { key = "∆" },
+    ["right_option+k"] = { key = "˚" },
+    ["right_option+l"] = { key = "¬" },
     
-    -- Focus avec cmd (inchangé)
-    ["right_option+cmd+h"] = { mods = {"cmd", "alt"}, key = "left" },
-    ["right_option+cmd+l"] = { mods = {"cmd", "alt"}, key = "right" },
-    ["right_option+cmd+j"] = { mods = {"cmd", "alt"}, key = "down" },
-    ["right_option+cmd+k"] = { mods = {"cmd", "alt"}, key = "up" },
+    -- Focus avec ctrl au lieu de cmd
+    ["right_option+ctrl+h"] = { mods = {"ctrl", "alt"}, key = "left" },
+    ["right_option+ctrl+l"] = { mods = {"ctrl", "alt"}, key = "right" },
+    ["right_option+ctrl+j"] = { mods = {"ctrl", "alt"}, key = "down" },
+    ["right_option+ctrl+k"] = { mods = {"ctrl", "alt"}, key = "up" },
 }
 
 -- Variable pour le debounce
@@ -354,6 +367,12 @@ local debounceInterval = 50 -- Réduit de 100ms à 50ms
 
 local function shouldExecuteAction(mods, key)
     local currentTime = hs.timer.absoluteTime() / 1000000
+    
+    -- Ignorer les événements Ctrl+hjkl simples (sans right_option)
+    if mods and #mods == 1 and mods[1] == "ctrl" and 
+       (key == "h" or key == "j" or key == "k" or key == "l") then
+        return false
+    end
     
     -- En mode custom, pas besoin de debounce pour les commandes de focus
     if checkCustomMode() then
@@ -405,26 +424,26 @@ hs.hotkey.bind({"right_option"}, "k", function()
 end)
 
 -- Pour les fonctions de focus
-hs.hotkey.bind({"right_option", "cmd"}, "h", function()
-    if shouldExecuteAction({"right_option", "cmd"}, "h") then
+hs.hotkey.bind({"right_option", "ctrl"}, "h", function()
+    if shouldExecuteAction({"right_option", "ctrl"}, "h") then
         focusWindowLeft()
     end
 end)
 
-hs.hotkey.bind({"right_option", "cmd"}, "l", function()
-    if shouldExecuteAction({"right_option", "cmd"}, "l") then
+hs.hotkey.bind({"right_option", "ctrl"}, "l", function()
+    if shouldExecuteAction({"right_option", "ctrl"}, "l") then
         focusWindowRight()
     end
 end)
 
-hs.hotkey.bind({"right_option", "cmd"}, "k", function()
-    if shouldExecuteAction({"right_option", "cmd"}, "k") then
+hs.hotkey.bind({"right_option", "ctrl"}, "k", function()
+    if shouldExecuteAction({"right_option", "ctrl"}, "k") then
         focusWindowUp()
     end
 end)
 
-hs.hotkey.bind({"right_option", "cmd"}, "j", function()
-    if shouldExecuteAction({"right_option", "cmd"}, "j") then
+hs.hotkey.bind({"right_option", "ctrl"}, "j", function()
+    if shouldExecuteAction({"right_option", "ctrl"}, "j") then
         focusWindowDown()
     end
 end)

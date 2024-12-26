@@ -1,4 +1,5 @@
 require('plugins')           
+require('core.window')
 require('core.keymaps')      
 require('core.options')      -- Déplacer options avant underlineworld
 require('core.underlineworld')
@@ -21,6 +22,10 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
         vim.keymap.set('n', '<C-j>', function() log_keypress('Ctrl-j') end, {silent = true})
         vim.keymap.set('n', '<C-k>', function() log_keypress('Ctrl-k') end, {silent = true})
         vim.keymap.set('n', '<C-l>', function() log_keypress('Ctrl-l') end, {silent = true})
+        vim.keymap.set('n', '<C-h>', '<C-w>h', {silent = true})
+        vim.keymap.set('n', '<C-j>', '<C-w>j', {silent = true})
+        vim.keymap.set('n', '<C-k>', '<C-w>k', {silent = true})
+        vim.keymap.set('n', '<C-l>', '<C-w>l', {silent = true})
     end
 })
 

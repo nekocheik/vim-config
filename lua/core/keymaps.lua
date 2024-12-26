@@ -63,3 +63,6 @@ map('n', '<leader>tw', ':!python3  ~/Project/Projet/transcrib.py &<CR>')
 
 vim.keymap.set('n', '<leader>tm', require('core.custom_mode').toggle_custom_mode, 
     { desc = 'Toggle mode personnalisé' })
+
+-- Ajouter ce mapping pour le zoom de fenêtre
+map('n', '<leader>df', ':lua require("core.window").zoom_window()<CR>')
