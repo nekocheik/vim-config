@@ -64,5 +64,16 @@ map('n', '<leader>tw', ':!python3  ~/Project/Projet/transcrib.py &<CR>')
 vim.keymap.set('n', '<leader>tm', require('core.custom_mode').toggle_custom_mode, 
     { desc = 'Toggle mode personnalisé' })
 
--- Ajouter ce mapping pour le zoom de fenêtre
-map('n', '<leader>df', ':lua require("core.window").zoom_window()<CR>')
+-- Mapping pour vim-maximizer
+map('n', '<leader>df', ':MaximizerToggle<CR>')  -- Toggle maximize/restore
+map('n', '<leader>dc', ':wincmd =<CR>')         -- Équilibrer toutes les fenêtres
+
+-- Mappings optionnels pour les autres modes
+map('v', '<leader>df', ':MaximizerToggle<CR>gv')
+map('i', '<leader>df', '<C-o>:MaximizerToggle<CR>')
+
+-- Supprimez ou commentez l'ancien code de zoom_restore
+-- vim.g.zoom_restore_enabled = true
+-- local function toggle_zoom_restore() ...
+-- etc.
+

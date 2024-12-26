@@ -61,6 +61,8 @@ Plug('github/copilot.vim')
 Plug('ibhagwan/fzf-lua')
 Plug('sindrets/diffview.nvim')
 Plug('matze/vim-move')
+Plug('szw/vim-maximizer')
+Plug('olimorris/persisted.nvim')
 
 
 vim.call('plug#end')

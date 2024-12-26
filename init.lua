@@ -1,5 +1,4 @@
 require('plugins')           
-require('core.window')
 require('core.keymaps')      
 require('core.options')      -- Déplacer options avant underlineworld
 require('core.underlineworld')
@@ -43,6 +42,8 @@ require('plugins.configs.coc')
 require('utils.functions')
 require('core.autocmds')
 require('core.custom_mode')
--- require('plugins.move')
+
+vim.g.maximizer_set_default_mapping = 0  -- Désactive le mapping par défaut (F3)
+vim.g.maximizer_set_mapping_with_bang = 1  -- Utilise la version avec bang par défaut
 
 
