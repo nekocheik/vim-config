@@ -3,6 +3,7 @@ require('core.keymaps')
 require('core.options')      -- Déplacer options avant underlineworld
 require('core.underlineworld')
 require('plugins.configs.move')
+require('plugins.configs.persisted')
 
 -- Ajouter un keymap de test pour les contrôles
 vim.api.nvim_create_autocmd({"VimEnter"}, {
@@ -33,6 +34,7 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
 
 
 -- Plugins et leurs configurations
+require('plugins.configs.startify')
 require('plugins.configs.cmp')
 require('plugins.configs.spectre')
 require('plugins.configs.accelerated')

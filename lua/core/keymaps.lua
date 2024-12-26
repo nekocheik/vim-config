@@ -77,3 +77,8 @@ map('i', '<leader>df', '<C-o>:MaximizerToggle<CR>')
 -- local function toggle_zoom_restore() ...
 -- etc.
 
+-- Gestion des sessions
+map('n', '<leader>ss', ':SessionSave<CR>', { desc = 'Sauvegarder la session' })
+map('n', '<leader>sl', ':SessionLoad<CR>', { desc = 'Charger une session' })
+map('n', '<leader>sd', ':SessionDelete<CR>', { desc = 'Supprimer la session' })
+
