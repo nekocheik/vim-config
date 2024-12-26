@@ -85,4 +85,6 @@ return require('packer').startup(function(use)
   if packer_bootstrap then
     require('packer').sync()
   end
+
+  use 'tpope/vim-unimpaired'
 end)
