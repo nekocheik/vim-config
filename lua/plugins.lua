@@ -83,3 +83,4 @@ vim.g.airline_skip_empty_sections = 1
 
 -- Configuration pour matchup
 vim.g.matchup_matchparen_offscreen = { method = 'popup' }
+

@@ -6,6 +6,11 @@ M.custom_mode_active = false
 -- Table pour stocker les mappages originaux
 local original_mappings = {}
 
+-- Timers pour la désactivation automatique et le décompte
+local auto_disable_timer = nil
+local countdown_timer = nil
+local remaining_seconds = 45
+
 -- Chemin du fichier temporaire
 local tmp_file = '/tmp/nvim_custom_mode_status'
 
@@ -18,9 +23,12 @@ local function update_status_file()
     end
 end
 
--- Créer le fichier immédiatement au démarrage
+-- Créer le fichier immédiatement au démarrage et définir la couleur par défaut
 do
     update_status_file()
+    vim.schedule(function()
+        vim.cmd([[highlight Normal guibg=NONE]])
+    end)
 end
 
 -- Fonction pour exécuter une commande shell
@@ -40,7 +48,20 @@ function M.toggle_custom_mode()
         original_mappings = {}
         vim.cmd([[highlight Normal guibg=NONE]])
         M.custom_mode_active = false
-        update_status_file()  -- Mettre à jour le fichier d'état
+        update_status_file()
+        
+        -- Annuler les timers s'ils existent
+        if auto_disable_timer then
+            auto_disable_timer:stop()
+            auto_disable_timer:close()
+            auto_disable_timer = nil
+        end
+        if countdown_timer then
+            countdown_timer:stop()
+            countdown_timer:close()
+            countdown_timer = nil
+        end
+        
         vim.notify("Mode personnalisé désactivé", vim.log.levels.INFO)
     else
         -- Activer le mode personnalisé
@@ -58,8 +79,35 @@ function M.toggle_custom_mode()
         
         vim.cmd([[highlight Normal guibg=#2a2a3f]])
         M.custom_mode_active = true
-        update_status_file()  -- Mettre à jour le fichier d'état
-        vim.notify("Mode personnalisé activé", vim.log.levels.INFO)
+        update_status_file()
+        
+        -- Réinitialiser le compteur
+        remaining_seconds = 45
+        
+        -- Créer un nouveau timer pour le décompte chaque seconde
+        if countdown_timer then
+            countdown_timer:stop()
+            countdown_timer:close()
+        end
+        countdown_timer = vim.loop.new_timer()
+        countdown_timer:start(0, 1000, vim.schedule_wrap(function()
+            remaining_seconds = remaining_seconds - 1
+            vim.notify("Mode personnalisé : " .. remaining_seconds .. "s restantes", vim.log.levels.INFO)
+        end))
+        
+        -- Créer un nouveau timer pour désactiver automatiquement après 45 secondes
+        if auto_disable_timer then
+            auto_disable_timer:stop()
+            auto_disable_timer:close()
+        end
+        auto_disable_timer = vim.loop.new_timer()
+        auto_disable_timer:start(45000, 0, vim.schedule_wrap(function()
+            if M.custom_mode_active then
+                M.toggle_custom_mode()
+            end
+        end))
+        
+        vim.notify("Mode personnalisé activé (45s)", vim.log.levels.INFO)
     end
 end
 

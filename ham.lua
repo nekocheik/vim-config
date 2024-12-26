@@ -16,14 +16,58 @@ local customModeBorderColor = {red = 1, green = 0, blue = 0, alpha = 0.8}
 -- Variable to track the previous mode
 local previousMode = false
 
+-- Ajouter au début du fichier
+local hotkeys = {}
+
+-- Fonctions pour changer de fenêtre active
+local function focusWindowLeft()
+    local win = hs.window.focusedWindow()
+    if win then
+        win:focusWindowWest()
+    end
+end
+
+local function focusWindowRight()
+    local win = hs.window.focusedWindow()
+    if win then
+        win:focusWindowEast()
+    end
+end
+
+local function focusWindowUp()
+    local win = hs.window.focusedWindow()
+    if win then
+        win:focusWindowNorth()
+    end
+end
+
+local function focusWindowDown()
+    local win = hs.window.focusedWindow()
+    if win then
+        win:focusWindowSouth()
+    end
+end
+
+-- Fonction pour gérer les raccourcis
+local function toggleHotkeys(enabled)
+    for _, hk in ipairs(hotkeys) do
+        if enabled then
+            hk:enable()
+        else
+            hk:disable()
+        end
+    end
+end
+
 -- Function to check the custom mode from the file
 function checkCustomMode()
     local file = io.open('/tmp/nvim_custom_mode_status', "r")
     if file then
         local content = file:read("*all")
         file:close()
-        -- Nettoyage du contenu pour éviter les problèmes de caractères invisibles
-        return content:gsub("%s+", "") == "true"
+        local isCustomMode = content:gsub("%s+", "") == "true"
+        -- hs.alert.show("Custom Mode Check: " .. tostring(isCustomMode))
+        return isCustomMode
     end
     return false
 end
@@ -39,6 +83,7 @@ local function updateBorder()
     if win then
         local f = win:frame()
         local isCustomMode = checkCustomMode()
+        -- hs.alert.show("Border Update: Custom Mode = " .. tostring(isCustomMode))
         
         borderCanvas = hs.canvas.new({
             x = f.x - borderWidth,
@@ -57,6 +102,9 @@ local function updateBorder()
         
         borderCanvas:level("overlay")
         borderCanvas:show()
+        
+        -- Ajouter la gestion des raccourcis
+        toggleHotkeys(not isCustomMode)
     end
 end
 
@@ -105,20 +153,14 @@ windowFilter:subscribe({
     hs.window.filter.windowMoved,
     hs.window.filter.windowResized
 }, function()
-    hs.notify.new({
-        title = "Window Event",
-        informativeText = "Window event triggered border update"
-    }):send()
+    -- hs.alert.show("Window Event: Window event triggered border update")
     updateBorder()
 end)
 
 -- Observateur pour les changements d'application
 local applicationWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
     if eventType == hs.application.watcher.activated then
-        hs.notify.new({
-            title = "App Changed",
-            informativeText = "Application changed to: " .. (appName or "unknown")
-        }):send()
+        -- hs.alert.show("App Changed: " .. (appName or "unknown"))
         updateBorder()
     end
 end)
@@ -150,11 +192,11 @@ function vsp()
     end
 end
 
--- Bind VSP à Cmd+Option+V
-hs.hotkey.bind({"cmd", "option"}, "V", vsp)
+-- Modifier les définitions des raccourcis pour les stocker
+local hk1 = hs.hotkey.bind({"cmd", "option"}, "V", vsp)
+table.insert(hotkeys, hk1)
 
--- Raccourci clavier pour basculer la fenêtre en plein écran avec Right Option + Espace
-hs.hotkey.bind({"right_option"}, "Space", function()
+local hk2 = hs.hotkey.bind({"right_option"}, "Space", function()
   local win = hs.window.focusedWindow()
   if win then
     local f = win:frame()
@@ -168,9 +210,11 @@ hs.hotkey.bind({"right_option"}, "Space", function()
       win:setFrame(f)
     else
       win:maximize()
+      win:raise()
     end
   end
 end)
+table.insert(hotkeys, hk2)
 
 -- Fonction pour déplacer la fenêtre vers la gauche et réorganiser
 function moveWindowLeft()
@@ -289,70 +333,144 @@ function moveWindowDown()
     end
 end
 
--- Raccourcis clavier avec right_option + hjkl (pour déplacer les fenêtres)
-hs.hotkey.bind({"right_option"}, "h", moveWindowLeft)
-hs.hotkey.bind({"right_option"}, "j", moveWindowUp)
-hs.hotkey.bind({"right_option"}, "k", moveWindowDown)
-hs.hotkey.bind({"right_option"}, "l", moveWindowRight)
+-- Table de mapping pour les raccourcis natifs
+local nativeKeyMap = {
+    -- Navigation avec les caractères spéciaux pour vim-move
+    ["right_option+h"] = { key = "˙" }, -- Option + h -> ˙
+    ["right_option+j"] = { key = "∆" }, -- Option + j -> ∆
+    ["right_option+k"] = { key = "˚" }, -- Option + k -> ˚
+    ["right_option+l"] = { key = "¬" }, -- Option + l -> ¬
+    
+    -- Focus avec cmd (inchangé)
+    ["right_option+cmd+h"] = { mods = {"cmd", "alt"}, key = "left" },
+    ["right_option+cmd+l"] = { mods = {"cmd", "alt"}, key = "right" },
+    ["right_option+cmd+j"] = { mods = {"cmd", "alt"}, key = "down" },
+    ["right_option+cmd+k"] = { mods = {"cmd", "alt"}, key = "up" },
+}
 
--- Fonctions pour changer de fenêtre active
-local function focusWindowLeft()
-    local win = hs.window.focusedWindow()
-    if win then
-        win:focusWindowWest()
+-- Variable pour le debounce
+local lastExecutionTime = 0
+local debounceInterval = 50 -- Réduit de 100ms à 50ms
+
+local function shouldExecuteAction(mods, key)
+    local currentTime = hs.timer.absoluteTime() / 1000000
+    
+    -- En mode custom, pas besoin de debounce pour les commandes de focus
+    if checkCustomMode() then
+        local keyCombo = table.concat(mods, "+") .. "+" .. key
+        local mapping = nativeKeyMap[keyCombo]
+        if mapping then
+            hs.eventtap.keyStrokes(mapping.key)
+        end
+        return false
     end
+    
+    -- Pour les commandes de focus (avec cmd), ignorer le debounce
+    if mods and #mods == 2 and mods[1] == "right_option" and mods[2] == "cmd" then
+        return true
+    end
+    
+    -- Appliquer le debounce uniquement pour les autres commandes
+    if (currentTime - lastExecutionTime) < debounceInterval then
+        return false
+    end
+    
+    lastExecutionTime = currentTime
+    return true
 end
 
-local function focusWindowRight()
-    local win = hs.window.focusedWindow()
-    if win then
-        win:focusWindowEast()
+-- Modifier les définitions des raccourcis pour utiliser la nouvelle logique
+hs.hotkey.bind({"right_option"}, "h", function()
+    if shouldExecuteAction({"right_option"}, "h") then
+        moveWindowLeft()
     end
-end
+end)
 
-local function focusWindowUp()
-    local win = hs.window.focusedWindow()
-    if win then
-        win:focusWindowNorth()
+hs.hotkey.bind({"right_option"}, "l", function()
+    if shouldExecuteAction({"right_option"}, "l") then
+        moveWindowRight()
     end
-end
+end)
 
-local function focusWindowDown()
-    local win = hs.window.focusedWindow()
-    if win then
-        win:focusWindowSouth()
+hs.hotkey.bind({"right_option"}, "j", function()
+    if shouldExecuteAction({"right_option"}, "j") then
+        moveWindowDown()
     end
-end
+end)
 
--- Raccourcis clavier avec right_option + f + hjkl (pour changer le focus)
-hs.hotkey.bind({"right_option", "cmd"}, "h", focusWindowLeft)
-hs.hotkey.bind({"right_option", "cmd"}, "l", focusWindowRight)
-hs.hotkey.bind({"right_option", "cmd"}, "k", focusWindowUp)
-hs.hotkey.bind({"right_option", "cmd"}, "j", focusWindowDown)
+hs.hotkey.bind({"right_option"}, "k", function()
+    if shouldExecuteAction({"right_option"}, "k") then
+        moveWindowUp()
+    end
+end)
 
--- Rendre la fonction vsp accessible via CLI
-hs.ipc.cliInstall()
-_G.vsp = vsp
--- Exposer la fonction vsp globalement
+-- Pour les fonctions de focus
+hs.hotkey.bind({"right_option", "cmd"}, "h", function()
+    if shouldExecuteAction({"right_option", "cmd"}, "h") then
+        focusWindowLeft()
+    end
+end)
 
--- Ajouter un raccourci right_option + w pour fermer la fenêtre
+hs.hotkey.bind({"right_option", "cmd"}, "l", function()
+    if shouldExecuteAction({"right_option", "cmd"}, "l") then
+        focusWindowRight()
+    end
+end)
+
+hs.hotkey.bind({"right_option", "cmd"}, "k", function()
+    if shouldExecuteAction({"right_option", "cmd"}, "k") then
+        focusWindowUp()
+    end
+end)
+
+hs.hotkey.bind({"right_option", "cmd"}, "j", function()
+    if shouldExecuteAction({"right_option", "cmd"}, "j") then
+        focusWindowDown()
+    end
+end)
+
+-- Pour les raccourcis de fermeture
 hs.hotkey.bind({"right_option"}, "3", function()
-    local win = hs.window.focusedWindow()
-    if win then
-        win:close()
+    if shouldExecuteAction() then
+        local win = hs.window.focusedWindow()
+        if win then win:close() end
     end
 end)
 
 hs.hotkey.bind({"right_option"}, "2", function()
-    local win = hs.window.focusedWindow()
-    if win then
-        win:close()
+    if shouldExecuteAction() then
+        local win = hs.window.focusedWindow()
+        if win then win:close() end
     end
 end)
 
--- Définir la fonction handleRightOption si nécessaire
+-- Pour le raccourci Space
+hs.hotkey.bind({"right_option"}, "Space", function()
+    if shouldExecuteAction() then
+        local win = hs.window.focusedWindow()
+        if win then
+            local f = win:frame()
+            local screen = win:screen()
+            local max = screen:frame()
+            
+            if f.x == max.x and f.y == max.y and f.w == max.w and f.h == max.h then
+                -- Restaurer à la taille précédente
+                f.w = max.w / 2
+                f.h = max.h
+                win:setFrame(f)
+            else
+                -- Maximiser et mettre au premier plan
+                win:maximize()
+                win:raise()
+            end
+        end
+    end
+end)
+
+hs.ipc.cliInstall()
+_G.vsp = vsp
+
 local function handleRightOption(event)
-    -- Ajoutez ici la logique pour gérer l'événement right_option
     return false
 end
 
