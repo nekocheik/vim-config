@@ -27,7 +27,8 @@ end
 do
     update_status_file()
     vim.schedule(function()
-        vim.cmd([[highlight Normal guibg=NONE]])
+        -- Supprimer la ligne qui change la couleur de fond par défaut
+        -- vim.cmd([[highlight Normal guibg=NONE]])
     end)
 end
 
@@ -46,7 +47,6 @@ function M.toggle_custom_mode()
         execute_command([[osascript -e 'tell application "Hammerspoon" to execute "enableCustomShortcuts()"']])
         
         original_mappings = {}
-        vim.cmd([[highlight Normal guibg=NONE]])
         M.custom_mode_active = false
         update_status_file()
         
@@ -77,7 +77,6 @@ function M.toggle_custom_mode()
         vim.keymap.set('n', 'k', 'gk', { buffer = 0, silent = true })
         vim.keymap.set('n', 'j', 'gj', { buffer = 0, silent = true })
         
-        vim.cmd([[highlight Normal guibg=#2a2a3f]])
         M.custom_mode_active = true
         update_status_file()
         
