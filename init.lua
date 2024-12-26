@@ -20,6 +20,7 @@ require('copilot').setup({
     suggestion = {
         enabled = true,
         auto_trigger = true,
+        model = "claude-3-sonnet-20240229",
         keymap = {
             accept = "<M-l>",
             next = "<M-]>",
@@ -126,6 +127,9 @@ vim.g.copilot_tab_fallback = ""
 
 -- Configuration de copilot.lua
 require('copilot').setup({
+    copilot = {
+      model = "claude-3-sonnet",
+    },
     panel = {
         enabled = true,
         auto_refresh = true,
@@ -150,32 +154,28 @@ require('copilot').setup({
     },
 })
 
--- Configuration d'avante.nvim avec Copilot
-require('avante').setup({
-    provider = "copilot",
-    auto_suggestions_provider = "copilot",
-    behaviour = {
-        auto_suggestions = true,
-        auto_set_highlight_group = true,
-        auto_set_keymaps = true,
-        auto_apply_diff_after_generation = false,
-        minimize_diff = true,
+-- Configuration pour gitgraph.nvim
+require('gitgraph').setup({
+    symbols = {
+        merge_commit = 'M',
+        commit = '*',
     },
-    windows = {
-        position = "right",
-        width = 30,
-        sidebar_header = {
-            enabled = true,
-            align = "center",
-            rounded = true,
-        },
+    format = {
+        timestamp = '%H:%M:%S %d-%m-%Y',
+        fields = { 'hash', 'timestamp', 'author', 'branch_name', 'tag' },
     },
-    mappings = {
-        suggestion = {
-            accept = "<M-l>",
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
-        },
-    }
+    hooks = {
+        on_select_commit = function(commit)
+            vim.notify('DiffviewOpen ' .. commit.hash .. '^!')
+            vim.cmd(':DiffviewOpen ' .. commit.hash .. '^!')
+        end,
+        on_select_range_commit = function(from, to)
+            vim.notify('DiffviewOpen ' .. from.hash .. '~1..' .. to.hash)
+            vim.cmd(':DiffviewOpen ' .. from.hash .. '~1..' .. to.hash)
+        end,
+    },
 })
+
+-- Ajouter un keymap pour dessiner le graphe Git
+vim.api.nvim_set_keymap('n', '<leader>gl', [[:lua require('gitgraph').draw({}, { all = true, max_count = 5000 })<CR>]], { noremap = true, silent = true })
+

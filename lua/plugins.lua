@@ -4,16 +4,21 @@ local Plug = vim.fn['plug#']
 vim.call('plug#begin')
 
 -- Gestionnaires de plugins et utilitaires de base
-Plug('nvim-pack/nvim-spectre', { 
+Plug('nvim-pack/nvim-spectre', {
     requires = {'nvim-lua/plenary.nvim', 'kyazdani42/nvim-web-devicons'}
 })
-Plug('junegunn/fzf', { ['do'] = './install --bin' })
+Plug('junegunn/fzf', {
+    ['do'] = './install --bin'
+})
 Plug('junegunn/fzf.vim')
 Plug('folke/which-key.nvim')
 Plug('roxma/vim-tmux-clipboard')
 Plug('NvChad/nvim-colorizer.lua')
 Plug('anhpt379/nvim-cursorword')
-Plug('neoclide/coc.nvim', { ['branch'] = 'master', ['do'] = 'npm ci' })
+Plug('neoclide/coc.nvim', {
+    ['branch'] = 'master',
+    ['do'] = 'npm ci'
+})
 Plug('folke/tokyonight.nvim')
 Plug('tmux-plugins/vim-tmux-focus-events')
 Plug('AndrewRadev/tagalong.vim')
@@ -39,8 +44,12 @@ Plug('ryanoasis/vim-devicons')
 Plug('kyazdani42/nvim-web-devicons')
 Plug('romgrk/barbar.nvim')
 Plug('mhinz/vim-startify')
-Plug('catppuccin/nvim', { ['as'] = 'catppuccin' })
-Plug('mg979/vim-visual-multi', { ['branch'] = 'master' })
+Plug('catppuccin/nvim', {
+    ['as'] = 'catppuccin'
+})
+Plug('mg979/vim-visual-multi', {
+    ['branch'] = 'master'
+})
 Plug('tpope/vim-fugitive')
 Plug('junegunn/gv.vim')
 Plug('neoclide/coc-tabnine')
@@ -49,7 +58,9 @@ Plug('nvim-lua/plenary.nvim')
 Plug('nvim-tree/nvim-tree.lua')
 Plug('tmhedberg/simpylfold')
 Plug('mhinz/vim-signify')
-Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
+Plug('nvim-treesitter/nvim-treesitter', {
+    ['do'] = ':TSUpdate'
+})
 Plug('pseewald/vim-anyfold')
 Plug('zbirenbaum/copilot.lua')
 Plug('onsails/lspkind-nvim')
@@ -75,26 +86,23 @@ Plug('zbirenbaum/copilot.lua')
 Plug('MeanderingProgrammer/render-markdown.nvim')
 
 -- Le plugin avante.nvim lui-même
-Plug('yetone/avante.nvim', { ['branch'] = 'main', ['do'] = 'make' })
+Plug('yetone/avante.nvim', {
+    ['branch'] = 'main',
+    ['do'] = 'make'
+})
+Plug('isakbm/gitgraph.nvim')
+Plug('sindrets/diffview.nvim')
 
 vim.call('plug#end')
 
 -- Après plug#end, ajoutez cette configuration pour airline
-vim.g.airline_extensions = {
-    'branch',
-    'hunks',
-    'coc',
-    'tabline',
-    'fzf',
-    'netrw',
-    'quickfix',
-    'wordcount',
-    'term'
-}
+vim.g.airline_extensions = {'branch', 'hunks', 'coc', 'tabline', 'fzf', 'netrw', 'quickfix', 'wordcount', 'term'}
 
 -- Désactiver le chargement automatique des extensions
 vim.g.airline_skip_empty_sections = 1
 
 -- Configuration pour matchup
-vim.g.matchup_matchparen_offscreen = { method = 'popup' }
+vim.g.matchup_matchparen_offscreen = {
+    method = 'popup'
+}
 
