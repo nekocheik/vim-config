@@ -176,6 +176,6 @@ require('gitgraph').setup({
     },
 })
 
--- Ajouter un keymap pour dessiner le graphe Git
-vim.api.nvim_set_keymap('n', '<leader>gl', [[:lua require('gitgraph').draw({}, { all = true, max_count = 5000 })<CR>]], { noremap = true, silent = true })
+-- Ajouter un keymap pour dessiner le graphe Git avec une nouvelle fenêtre en vsp
+vim.api.nvim_set_keymap('n', '<leader>gl', [[:vsp<CR>:lua require('gitgraph').draw({}, { all = true, max_count = 5000 })<CR>]], { noremap = true, silent = true })
 
