@@ -178,4 +178,51 @@ require('gitgraph').setup({
 
 -- Ajouter un keymap pour dessiner le graphe Git avec une nouvelle fenêtre en vsp
 vim.api.nvim_set_keymap('n', '<leader>gl', [[:vsp<CR>:lua require('gitgraph').draw({}, { all = true, max_count = 5000 })<CR>]], { noremap = true, silent = true })
+vim.opt.guifont = "FiraCode Nerd Font:h14"  -- Ajustez la taille de la police selon vos préférences
+
+-- Configuration du thème Kanagawa
+require('kanagawa').setup({
+    compile = false,             -- Ne pas compiler le thème
+    undercurl = true,            -- Activer les undercurls
+    commentStyle = { italic = true },
+    keywordStyle = { italic = true },
+    statementStyle = { bold = true },
+    transparent = false,         -- Ne pas rendre le fond transparent
+    dimInactive = true,         -- Ne pas atténuer les fenêtres inactives
+    terminalColors = true,       -- Définir les couleurs du terminal
+    theme = "wave",              -- Thème par défaut
+    background = {
+        dark = "wave",
+        light = "lotus"
+    },
+})
+
+-- Charger le thème Kanagawa
+vim.cmd("colorscheme kanagawa")
+
+-- Ajoutez cette ligne après les autres requires, par exemple après la ligne 116
+require('plugins.configs.vimspector').setup()
+
+-- Ajouter après les autres requires
+require('launch').setup({
+  task = {
+    display = 'float',
+    float_config = {
+      relative = 'editor',
+      border = 'rounded',
+      title_pos = 'center',
+      style = 'minimal',
+    },
+    insert_on_launch = true,
+    options = {
+      shell = {
+        exec = vim.o.shell,
+        args = { '-c' }
+      }
+    }
+  }
+})
+
+require('plugins.configs.notify')
+require('plugins.configs.hover')
 

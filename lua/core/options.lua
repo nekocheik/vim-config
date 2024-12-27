@@ -42,18 +42,8 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
--- Simplification de la configuration du thème
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "catppuccin",
-  callback = function()
-    vim.cmd('colorscheme catppuccin-macchiato')
-    vim.g.airline_theme = 'catppuccin'
-  end,
-})
-
--- Alternative directe si vous préférez
-vim.cmd('colorscheme catppuccin-macchiato')
-vim.g.airline_theme = 'catppuccin'
+-- Configurer Vim Airline pour qu'il soit assorti au thème Kanagawa
+vim.g.airline_theme = 'kanagawa'
 
 -- Ignorer les fichiers cachés et dossiers spécifiques dans FZF
 vim.env.FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!**/{node_modules,vendor,.git,__pycache__,build,dist,target,elm-stuff,.idea,.vscode,deps,.venv,Cargo.lock,Cargo.toml,.*}"'

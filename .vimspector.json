@@ -1,0 +1,18 @@
+{
+  "configurations": {
+    "Launch": {
+      "adapter": "vscode-node",
+      "configuration": {
+        "request": "launch",
+        "protocol": "auto",
+        "stopOnEntry": true,
+        "console": "integratedTerminal",
+        "program": "${workspaceRoot}/src/index.ts",
+        "cwd": "${workspaceRoot}",
+        "sourceMaps": true,
+        "skipFiles": ["<node_internals>/**/*.js"],
+        "runtimeArgs": ["-r", "ts-node/register"]
+      }
+    }
+  }
+} 

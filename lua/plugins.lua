@@ -74,6 +74,7 @@ Plug('sindrets/diffview.nvim')
 Plug('matze/vim-move')
 Plug('szw/vim-maximizer')
 Plug('olimorris/persisted.nvim')
+Plug('tonsky/FiraCode')
 
 -- Dépendances pour avante.nvim
 Plug('stevearc/dressing.nvim')
@@ -92,6 +93,15 @@ Plug('yetone/avante.nvim', {
 })
 Plug('isakbm/gitgraph.nvim')
 Plug('sindrets/diffview.nvim')
+Plug('rebelot/kanagawa.nvim')
+
+Plug('puremourning/vimspector')
+
+-- Ajouter avant vim.call('plug#end')
+Plug 'rcarriga/nvim-notify'
+Plug('mfussenegger/nvim-dap')
+Plug('dasupradyumna/launch.nvim')
+Plug('lewis6991/hover.nvim')
 
 vim.call('plug#end')
 

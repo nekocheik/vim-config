@@ -82,3 +82,14 @@ map('n', '<leader>ss', ':SessionSave<CR>', { desc = 'Sauvegarder la session' })
 map('n', '<leader>sl', ':SessionLoad<CR>', { desc = 'Charger une session' })
 map('n', '<leader>sd', ':SessionDelete<CR>', { desc = 'Supprimer la session' })
 
+-- Mappings pour Vimspector
+vim.api.nvim_set_keymap('n', '<Leader>di', '<Plug>VimspectorBalloonEval', { noremap = false })
+vim.api.nvim_set_keymap('x', '<Leader>di', '<Plug>VimspectorBalloonEval', { noremap = false })
+
+-- Mapping personnalisé pour lancer le débogueur
+vim.api.nvim_set_keymap('n', '<Leader>dd', ':call vimspector#Launch()<CR>', { noremap = true, silent = true })
+
+-- Mappings pour nvim-notify
+map('n', '<leader>fn', ':Telescope notify<CR>', { desc = 'Rechercher les notifications' })
+map('n', '<leader>nn', ':Notifications<CR>', { desc = 'Afficher l\'historique des notifications' })
+
