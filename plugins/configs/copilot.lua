@@ -1,22 +1,43 @@
--- Configuration de base de Copilot
-vim.g.copilot_no_tab_map = false  -- Permet d'utiliser Tab pour les suggestions
-vim.g.copilot_assume_mapped = true
-vim.g.copilot_tab_fallback = ""
+local M = {}
 
--- Configurations supplémentaires pour améliorer l'expérience
-vim.g.copilot_filetypes = {
-    ["*"] = true,
-    ["help"] = false,
-    ["gitcommit"] = false,
-    ["gitrebase"] = false,
-    ["hgcommit"] = false,
-    ["svn"] = false,
-    ["cvs"] = false,
-}
+function M.setup()
+  require('copilot').setup({
+    suggestion = {
+      enabled = true,
+      auto_trigger = true,
+      debounce = 75,
+      keymap = {
+        accept = "<Tab>",
+        accept_word = "<M-w>",
+        accept_line = "<M-]>",
+        next = "<M-]>",
+        prev = "<M-[>",
+        dismiss = "<C-]>",
+      },
+    },
+    panel = {
+      enabled = true,
+      auto_refresh = false,
+      keymap = {
+        jump_prev = "[[",
+        jump_next = "]]",
+        accept = "<CR>",
+        refresh = "gr",
+        open = "<M-CR>"
+      },
+    },
+    filetypes = {
+      yaml = false,
+      markdown = false,
+      help = false,
+      gitcommit = false,
+      gitrebase = false,
+      hgcommit = false,
+      svn = false,
+      cvs = false,
+      ["."] = false,
+    },
+  })
+end
 
--- Mapping personnalisé pour Copilot
-vim.api.nvim_set_keymap('i', '<Tab>', 'copilot#Accept("<CR>")', {
-    expr = true,
-    silent = true,
-    replace_keycodes = false
-}) 
+return M 

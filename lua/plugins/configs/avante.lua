@@ -24,7 +24,7 @@ vim.defer_fn(function()
         },
         mappings = {
             suggestion = {
-                accept = "<M-l>",
+                accept = "<Tab>",
                 next = "<M-]>",
                 prev = "<M-[>",
                 dismiss = "<C-]>",

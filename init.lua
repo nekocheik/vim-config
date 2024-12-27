@@ -5,7 +5,6 @@ require('core.keymaps')
 require('core.options')      
 
 -- Configurations des plugins
-require('plugins.configs.copilot')  -- Nouvelle configuration
 require('plugins.configs.git')      -- Nouvelle configuration
 require('plugins.configs.theme')    -- Nouvelle configuration
 require('plugins.configs.debug')    -- Nouvelle configuration
