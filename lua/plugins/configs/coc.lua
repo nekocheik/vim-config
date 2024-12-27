@@ -39,7 +39,7 @@ coc_config('typescript', {
 vim.g.coc_global_extensions = {
   'coc-snippets', 'coc-pairs', 'coc-tsserver', 'coc-eslint', 
   'coc-prettier', 'coc-json', 'coc-explorer', 'coc-tabnine', 
-  'coc-git', 'coc-react-refactor', '@hexuhua/coc-copilot',  "@yaegassy/coc-volar"
+  'coc-git', 'coc-react-refactor', "@yaegassy/coc-volar"
 }
 
 -- Function to show detailed type info
