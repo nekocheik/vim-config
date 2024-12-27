@@ -6,10 +6,11 @@ require('core.options')
 
 -- Configurations des plugins
 require('plugins.configs.copilot')  -- Nouvelle configuration
-require('plugins.configs.avante')   -- Nouvelle configuration
 require('plugins.configs.git')      -- Nouvelle configuration
 require('plugins.configs.theme')    -- Nouvelle configuration
 require('plugins.configs.debug')    -- Nouvelle configuration
+require('plugins.configs.theme')    
+
 
 -- Chargement des configurations de base
 require('core.autocmds')
@@ -18,3 +19,4 @@ require('core.underlineworld')
 
 -- Chargement des plugins additionnels
 require('plugins.configs.all')      -- Nouveau fichier pour gérer tous les plugins
+require('plugins.configs.avante')   -- Nouvelle configuration

@@ -19,6 +19,7 @@ Plug('neoclide/coc.nvim', {
     ['branch'] = 'master',
     ['do'] = 'npm ci'
 })
+Plug('aserowy/tmux.nvim')
 Plug('folke/tokyonight.nvim')
 Plug('tmux-plugins/vim-tmux-focus-events')
 Plug('AndrewRadev/tagalong.vim')
@@ -87,10 +88,6 @@ Plug('zbirenbaum/copilot.lua')
 Plug('MeanderingProgrammer/render-markdown.nvim')
 
 -- Le plugin avante.nvim lui-même
-Plug('yetone/avante.nvim', {
-    ['branch'] = 'main',
-    ['do'] = 'make'
-})
 Plug('isakbm/gitgraph.nvim')
 Plug('sindrets/diffview.nvim')
 Plug('rebelot/kanagawa.nvim')
@@ -102,6 +99,12 @@ Plug 'rcarriga/nvim-notify'
 Plug('mfussenegger/nvim-dap')
 Plug('dasupradyumna/launch.nvim')
 Plug('lewis6991/hover.nvim')
+Plug 'Mofiqul/dracula.nvim'
+
+Plug('yetone/avante.nvim', {
+    ['branch'] = 'main',
+    ['do'] = 'make'
+})
 
 vim.call('plug#end')
 
