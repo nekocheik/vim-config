@@ -1,4 +1,5 @@
 -- Chargements essentiels
+require('utils.functions')      -- Charger les fonctions utilitaires en premier
 require('plugins')           
 require('core.keymaps')      
 require('core.options')      
