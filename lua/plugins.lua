@@ -68,7 +68,6 @@ Plug('stevearc/dressing.nvim')
 Plug('MunifTanjim/nui.nvim')
 Plug('echasnovski/mini.icons')
 Plug('HakonHarnes/img-clip.nvim')
--- Plug('github/copilot.vim')
 Plug('ibhagwan/fzf-lua')
 Plug('sindrets/diffview.nvim')
 Plug('matze/vim-move')
@@ -117,4 +116,18 @@ vim.g.airline_skip_empty_sections = 1
 vim.g.matchup_matchparen_offscreen = {
     method = 'popup'
 }
+
+-- Après plug#end, ajoutez cette configuration pour Copilot
+require('copilot').setup({
+    suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        keymap = {
+            accept = "<Tab>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>"
+        },
+    },
+})
 
